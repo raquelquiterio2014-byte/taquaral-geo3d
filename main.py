@@ -1,8 +1,10 @@
 import json
 import math
 from pathlib import Path
+from datetime import date
+from typing import Literal
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.responses import HTMLResponse, Response
 from pyproj import Geod
 from shapely.geometry import shape
@@ -376,7 +378,7 @@ def home():
                 color: #10202b;
             }
 
-            #surface-view, #bathymetry-view, #connected-view {
+            #surface-view, #bathymetry-view, #connected-view, #environment-view {
                 padding: 20px;
             }
 
@@ -395,7 +397,7 @@ def home():
                 color: #66e5c4;
             }
 
-            #surface-frame, #bathymetry-frame, #connected-frame {
+            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame {
                 display: block;
                 width: 100%;
                 height: 78vh;
@@ -423,6 +425,9 @@ def home():
             <button id="show-bathymetry" type="button"
                     aria-controls="bathymetry-view" aria-pressed="false">
                 Historical Bathymetry
+            </button>
+            <button id="show-environment" type="button" aria-controls="environment-view" aria-pressed="false">
+                V4 · Water Quality
             </button>
         </nav>
 
@@ -561,6 +566,10 @@ def home():
         </section>
 
 
+        <section id="environment-view" hidden aria-label="V4 historical water quality">
+            <iframe id="environment-frame" title="V4 — Historical Water Quality Explorer"
+                    data-source="/environmental-monitoring"></iframe>
+        </section>
         <section id="connected-view" hidden aria-label="V2 connected spatial exploration">
             <iframe id="connected-frame" title="V2 — Connected Spatial Exploration"
                     data-source="/connected-exploration"></iframe>
@@ -990,8 +999,12 @@ def home():
                 const connectedView = document.getElementById("connected-view");
                 const connectedButton = document.getElementById("show-connected");
                 const connectedFrame = document.getElementById("connected-frame");
-                const views = [mapView, surfaceView, connectedView, bathymetryView];
-                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton];
+                const environmentView = document.getElementById("environment-view");
+                const environmentButton = document.getElementById("show-environment");
+                const environmentFrame = document.getElementById("environment-frame");
+                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView];
+                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton];
+                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame];
                 function showView(index) {
                     views.forEach((view, i) => { view.hidden = i !== index; });
                     buttons.forEach((button, i) => {
@@ -1000,12 +1013,12 @@ def home():
                     if (index === 0) {
                         requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
                     } else {
-                        const targetFrame = index === 1 ? frame : index === 2 ? connectedFrame : bathymetryFrame;
+                        const targetFrame = frames[index];
                         if (!targetFrame.hasAttribute("src")) {
                             targetFrame.src = targetFrame.dataset.source;
-                        } else if (index === 2) {
-                            requestAnimationFrame(() => connectedFrame.contentWindow.postMessage(
-                                {type: "taquaral:resize"}, window.location.origin
+                        } else if (index === 2 || index === 4) {
+                            requestAnimationFrame(() => targetFrame.contentWindow.postMessage(
+                                {type: index === 2 ? "taquaral:resize" : "taquaral:environment-resize"}, window.location.origin
                             ));
                         }
                     }
@@ -1118,3 +1131,61 @@ def connected_surface_profile(
 ):
     from connected_exploration import profile
     return profile(lat1, lon1, lat2, lon2)
+
+
+@app.get("/environmental-monitoring", response_class=HTMLResponse)
+def environmental_monitoring_view():
+    return (BASE_DIR / "assets/environmental_monitoring.html").read_text(encoding="utf-8")
+
+
+@app.get("/assets/environmental_monitoring.js", include_in_schema=False)
+def environmental_monitoring_script():
+    from fastapi.responses import FileResponse
+    return FileResponse(BASE_DIR / "assets/environmental_monitoring.js", media_type="text/javascript")
+
+
+@app.get("/environmental-monitoring/source-row/{table_id}", include_in_schema=False)
+def water_quality_source_row(table_id: int):
+    from fastapi.responses import FileResponse
+    if table_id not in {4, 5, 6, 7}:
+        raise HTTPException(404, "Only reviewed surface rows from Tables 4–7 are available.")
+    return FileResponse(BASE_DIR / f"assets/thesis_table_{table_id}_surface.png", media_type="image/png")
+
+
+def reviewed_quality_selection(
+    parameter: Literal["dissolved_oxygen", "water_temperature", "ph", "conductivity"] | None = Query(None),
+    station: Literal["E1", "E2"] | None = Query(None),
+    start: date | None = Query(None),
+    end: date | None = Query(None),
+):
+    from environmental_monitoring import load_dataset, select_records
+    if start and end and start > end:
+        raise HTTPException(422, "From date must not be later than To date.")
+    try:
+        records, metadata = load_dataset()
+    except (OSError, ValueError, KeyError) as exc:
+        raise HTTPException(500, "Historical water-quality data failed validation. Restore the reviewed V4 data files.") from exc
+    selected = select_records(records, parameter, station, start, end)
+    return {"metadata": metadata, "record_count": len(selected), "records": selected}
+
+
+@app.get("/api/historical-water-quality")
+def historical_water_quality(selection=Depends(reviewed_quality_selection)):
+    return selection
+
+
+@app.get("/api/historical-water-quality/export")
+def historical_water_quality_export(
+    format: Literal["csv", "json"] = Query("json"),
+    selection=Depends(reviewed_quality_selection),
+):
+    from environmental_monitoring import csv_export, load_dataset
+    if format == "csv":
+        all_records, _ = load_dataset()
+        content = csv_export(selection["records"], list(all_records[0]))
+        media_type = "text/csv"
+    else:
+        content = json.dumps(selection, ensure_ascii=False, indent=2) + "\n"
+        media_type = "application/json"
+    return Response(content, media_type=media_type,
+                    headers={"Content-Disposition": f'attachment; filename="taquaral_v4_historical_water_quality.{format}"'})

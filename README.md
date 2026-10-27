@@ -4,7 +4,7 @@ An educational Python application for exploring Taquaral Lake and its surroundin
 in Campinas, São Paulo, Brazil. It combines an interactive map, geodesic measurements
 and a browser-based 3D surface viewer.
 
-**Available: V1 Parts 1–3, V2 Connected Spatial Exploration and V3 Historical Bathymetry — Published Data Explorer.**
+**Available: V1 Parts 1–3, V2 Connected Spatial Exploration and V3 Historical Bathymetry — Published Data Explorer, and the V4 initial historical water-quality dataset.**
 
 V1 Parts 1–3 remain available. V1 completion tasks remain pending. V2 and V3 have separate scopes; their visual checks on the author's Windows installation remain pending.
 
@@ -131,7 +131,7 @@ Only **V1** has three publication parts. Subsequent post numbers match software 
 | V1 | Mapping, measurements and integrated 3D surface | Current prototype; POIs, export buttons, further validation and documentation refinements remain |
 | V2 | Connected Spatial Exploration | Implemented: draped OSM outline, shared 2D/3D A–B selection, DSM elevation profile; visual confirmation pending |
 | V3 | Historical Bathymetry — Published Data Explorer | Delivered within this scope: thesis metrics, historical map, provenance and exports; underwater reconstruction excluded |
-| V4 | Environmental Monitoring | Planned |
+| V4 | Environmental Monitoring | Initial delivery: 48 reviewed historical surface observations, filters, discrete charts and provenance-preserving exports; remaining depths and CSV upload pending |
 | V5 | Change Analysis | Planned; depends on comparable campaigns |
 | V6 | Advanced Spatial Analysis | Planned; detailed datasets subject to availability |
 | V7 | Satellite Monitoring | Planned; not implemented in this repository |
@@ -179,3 +179,16 @@ V3 verification: **14 automated tests passed** on Python 3.12, covering existing
 See [V2_SETUP.md](V2_SETUP.md) for update instructions, source interpretation, manual verification and publication boundaries. The view uses the local Copernicus crop and Plotly library served by Python; it does not load thesis depths or a bathymetric surface. The lake outline is sampled on the DSM with a documented 1 m display lift. A–B profile distances agree with the geodesic measurement endpoint; nearest native cells preserve missing values as gaps. More profile samples do not improve native resolution.
 
 Software verification: **21 tests passed** on Python 3.12, including source crop sampling, missing values, endpoints, distance consistency, coordinate validation and V1/V3 regressions. Both the V2 JavaScript file and dashboard inline scripts passed JavaScript syntax checks. Browser rendering and the two-way selection flow still require the manual Windows checks described in V2_SETUP.md.
+
+
+## V4 — Historical Water Quality Explorer (initial delivery)
+
+This read-only historical dataset contains **48 surface observations (0.0 m)** from annex Tables 4–7 of Hernández Piedrahíta (USP, 2002), with six sampling dates in 2000 at stations E1/E2: dissolved oxygen, water temperature, pH and conductivity. Each selected value was visually compared against the rendered source row. The complete depth profiles have not been incorporated. The review was AI-assisted and is not independent revalidation of the original field measurements.
+
+The V4 dashboard offers parameter/station/date filters, discrete observation charts, selected-record tables, short attributed source-row excerpts and CSV/JSON exports carrying per-record provenance. It does not assess current conditions, stream live measurements, interpolate between campaigns or assign a regulatory classification. See [V4_SETUP.md](V4_SETUP.md) for update instructions, source pages and limitations.
+
+Data: `data/references/historical_water_quality.csv` and its metadata JSON. Source printed pages 150–153 / PDF pages 173–176. Original printed decimals are preserved alongside normalized values. No station coordinates are invented.
+
+V4 endpoints: `/environmental-monitoring`, `/api/historical-water-quality`, and `/api/historical-water-quality/export?format=csv` or `format=json`. Optional filters: `parameter`, `station`, `start`, `end`.
+
+V4 initial delivery verification: **30 tests passed**, covering existing V1–V3 functions, selected source-cell alignment, historical provenance, filter/export consistency and rejection of invalid or duplicate records. JavaScript syntax and Python compilation checks passed. Interactive visual review remains pending on Windows.

@@ -1,0 +1,73 @@
+{
+  "version": "V4 initial delivery",
+  "name": "Environmental Monitoring — Historical Water Quality Explorer",
+  "status": "historical_published_measurements_only",
+  "scope": "Surface row (0.0 m) only from annex Tables 4–7; no other depths or tables are incorporated.",
+  "record_count": 48,
+  "sample_dates": [
+    "2000-03-13",
+    "2000-03-15",
+    "2000-05-16",
+    "2000-05-18",
+    "2000-08-09",
+    "2000-08-11"
+  ],
+  "stations": {
+    "E1": "Station 1 near the outlet, as described in the thesis",
+    "E2": "Station 2 in the central region, as described in the thesis"
+  },
+  "parameters": {
+    "dissolved_oxygen": {
+      "label": "Dissolved oxygen",
+      "unit": "mg/L",
+      "source_table": 4,
+      "printed_page": 150,
+      "pdf_page": 173,
+      "row_excerpt": "/environmental-monitoring/source-row/4"
+    },
+    "water_temperature": {
+      "label": "Water temperature",
+      "unit": "°C",
+      "source_table": 5,
+      "printed_page": 151,
+      "pdf_page": 174,
+      "row_excerpt": "/environmental-monitoring/source-row/5"
+    },
+    "ph": {
+      "label": "pH",
+      "unit": "dimensionless",
+      "source_table": 6,
+      "printed_page": 152,
+      "pdf_page": 175,
+      "row_excerpt": "/environmental-monitoring/source-row/6"
+    },
+    "conductivity": {
+      "label": "Conductivity",
+      "unit": "µS/cm",
+      "source_table": 7,
+      "printed_page": 153,
+      "pdf_page": 176,
+      "row_excerpt": "/environmental-monitoring/source-row/7"
+    }
+  },
+  "source": {
+    "author": "Esperanza Hernández Piedrahíta",
+    "year": 2002,
+    "url": "https://teses.usp.br/teses/disponiveis/18/18139/tde-01122016-130125/pt-br.html",
+    "title": "Caracterização limnológica e estudo do processo de sedimentação e liberação de fósforo da Lagoa do Taquaral - Campinas (SP)",
+    "pdf_sha256": "92f8bb5380fb9ca6824e7546a011073538e2278c04b50a31e34510609470e752"
+  },
+  "review": {
+    "method": "Each of the 48 selected surface cells was visually compared against the rendered original table row, including date/station column headings and unit. Printed decimal commas are preserved in value_raw and normalized to decimal points in value.",
+    "reviewer": "AI-assisted transcription; not an independent second review",
+    "date": "2026-10-27"
+  },
+  "limitations": [
+    "Selected surface observations only; the complete depth profiles remain untranscribed and unreviewed.",
+    "No station coordinates are inferred; station descriptions do not establish surveyed positions.",
+    "Blank cells elsewhere in the source are not converted to zero or filled. No missing values are introduced or inferred in the selected complete surface rows.",
+    "No current-condition statement, regulatory classification, trend forecast or safety assessment is produced.",
+    "The chart displays discrete observations without interpolation between campaigns.",
+    "The original measurements have not been independently revalidated; visual transcription checks do not establish instrument accuracy."
+  ]
+}
