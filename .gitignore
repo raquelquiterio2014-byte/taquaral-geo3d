@@ -17,3 +17,6 @@ backups/
 data/raw/*.tif
 data/processed/*.tif
 outputs/*.html
+
+# Small reproducible study crop used by the connected V2 viewer.
+!data/processed/taquaral_surface.tif

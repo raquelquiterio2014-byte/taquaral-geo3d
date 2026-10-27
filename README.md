@@ -4,9 +4,9 @@ An educational Python application for exploring Taquaral Lake and its surroundin
 in Campinas, São Paulo, Brazil. It combines an interactive map, geodesic measurements
 and a browser-based 3D surface viewer.
 
-**Latest delivery: V3 — Historical Bathymetry — Published Data Explorer.**
+**Available: V1 Parts 1–3, V2 Connected Spatial Exploration and V3 Historical Bathymetry — Published Data Explorer.**
 
-V1 Parts 1–3 remain available. V1 completion tasks and V2 spatial synchronization remain pending; version numbers do not imply those tasks are finished.
+V1 Parts 1–3 remain available. V1 completion tasks remain pending. V2 and V3 have separate scopes; their visual checks on the author's Windows installation remain pending.
 
 ## Implemented features
 
@@ -18,7 +18,7 @@ V1 Parts 1–3 remain available. V1 completion tasks and V2 spatial synchronizat
 
 The application interface is in English. The thesis figure retains its original Portuguese labels, with English explanations provided alongside it. A map click is an approximate selection, not a
 surveyed reference. Switching dashboard views preserves the measurement state.
-The map and 3D view are not yet spatially synchronized.
+The original 3D Surface tab remains the V1 viewer. The separate V2 Connected Exploration tab synchronizes A–B selections with the 2D map and adds a surface elevation profile.
 
 ## Run locally
 
@@ -40,8 +40,7 @@ the map measurements work without downloading OSM data again.
 The first `build_surface_3d.py` run downloads an approximately 41 MB elevation tile,
 clips the study area and creates `outputs/taquaral_surface_3d.html`. The dashboard's
 3D tab requires this generated file. Without it, the route returns an explanatory
-404. Source raster files, processed rasters and generated HTML are not committed;
-the scripts regenerate them. An internet connection is required for dependency
+404. The large source raster and generated HTML are not committed; the scripts regenerate them. The small processed study crop is committed for V2 and can be regenerated with the same script. An internet connection is required for dependency
 installation, the initial elevation download, Leaflet and OpenStreetMap tiles.
 Once generated, the standalone 3D HTML can also be opened without FastAPI or internet.
 
@@ -70,6 +69,10 @@ present in `main.py`, and the helper exits without changing an integrated file.
 | GET `/api/historical-bathymetry` | Historical results, provenance and limitations |
 | GET `/api/historical-bathymetry/export?format=csv` | CSV download with provenance per metric |
 | GET `/api/historical-bathymetry/export?format=json` | Complete JSON download |
+| GET `/connected-exploration` | V2 connected 3D surface and profile |
+| GET `/api/surface-scene` | Surface grid and draped OSM lake outline |
+| GET `/api/surface-point?lat=...&lon=...` | Nearest-cell elevation and UTM offsets |
+| GET `/api/surface-profile?lat1=...&lon1=...&lat2=...&lon2=...` | Surface profile along an ellipsoidal geodesic |
 | GET `/docs` | FastAPI API documentation |
 
 ## Data, methods and limitations
@@ -126,7 +129,7 @@ Only **V1** has three publication parts. Subsequent post numbers match software 
 | Version | Scope | Status |
 | --- | --- | --- |
 | V1 | Mapping, measurements and integrated 3D surface | Current prototype; POIs, export buttons, further validation and documentation refinements remain |
-| V2 | Lake overlay on 3D, synchronized A–B points, elevation profile | Planned |
+| V2 | Connected Spatial Exploration | Implemented: draped OSM outline, shared 2D/3D A–B selection, DSM elevation profile; visual confirmation pending |
 | V3 | Historical Bathymetry — Published Data Explorer | Delivered within this scope: thesis metrics, historical map, provenance and exports; underwater reconstruction excluded |
 | V4 | Environmental Monitoring | Planned |
 | V5 | Change Analysis | Planned; depends on comparable campaigns |
@@ -154,7 +157,7 @@ Developed by **Raquel Cruz** as a learning and portfolio project.
 
 This work is being developed based on data published in the doctoral thesis by Esperanza Hernández Piedrahíta (USP, 2002). The Historical Bathymetry tab reports historical summary values and provenance, not current lake measurements or a reconstructed underwater surface. See [V3_SETUP.md](V3_SETUP.md) for source page numbers, unresolved station-depth discrepancies and update instructions.
 
-The source data are in `data/references/historical_bathymetry.json`; `/api/historical-bathymetry` exposes them with their limitations. The specific bathymetric survey date is unconfirmed. V2 remains planned. Underwater surface reconstruction is outside the agreed V3 scope and requires a separate future data/method evaluation.
+The source data are in `data/references/historical_bathymetry.json`; `/api/historical-bathymetry` exposes them with their limitations. The specific bathymetric survey date is unconfirmed. V2 is implemented separately; see [V2_SETUP.md](V2_SETUP.md). Underwater surface reconstruction is outside the agreed V3 scope and requires a separate future data/method evaluation.
 
 
 ### V3 acceptance and attribution
@@ -169,3 +172,10 @@ The source data are in `data/references/historical_bathymetry.json`; `/api/histo
 The original thesis is available at https://teses.usp.br/teses/disponiveis/18/18139/tde-01122016-130125/pt-br.html . Figure 3 is an attributed excerpt for study and analysis; the full thesis is not bundled. Consult the source for reuse conditions. The historical map is not a georeferenced layer and is not evidence of current depths.
 
 V3 verification: **14 automated tests passed** on Python 3.12, covering existing geodesic functions, historical attribution, figure serving, provenance-preserving exports and format validation. Automated browser review could not run in the build environment; visual confirmation on the author's Windows installation remains pending.
+
+
+## V2 — Connected Spatial Exploration
+
+See [V2_SETUP.md](V2_SETUP.md) for update instructions, source interpretation, manual verification and publication boundaries. The view uses the local Copernicus crop and Plotly library served by Python; it does not load thesis depths or a bathymetric surface. The lake outline is sampled on the DSM with a documented 1 m display lift. A–B profile distances agree with the geodesic measurement endpoint; nearest native cells preserve missing values as gaps. More profile samples do not improve native resolution.
+
+Software verification: **21 tests passed** on Python 3.12, including source crop sampling, missing values, endpoints, distance consistency, coordinate validation and V1/V3 regressions. Both the V2 JavaScript file and dashboard inline scripts passed JavaScript syntax checks. Browser rendering and the two-way selection flow still require the manual Windows checks described in V2_SETUP.md.

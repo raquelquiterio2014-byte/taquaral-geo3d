@@ -376,7 +376,7 @@ def home():
                 color: #10202b;
             }
 
-            #surface-view, #bathymetry-view {
+            #surface-view, #bathymetry-view, #connected-view {
                 padding: 20px;
             }
 
@@ -395,7 +395,7 @@ def home():
                 color: #66e5c4;
             }
 
-            #surface-frame, #bathymetry-frame {
+            #surface-frame, #bathymetry-frame, #connected-frame {
                 display: block;
                 width: 100%;
                 height: 78vh;
@@ -415,6 +415,10 @@ def home():
             <button id="show-surface" type="button"
                     aria-controls="surface-view" aria-pressed="false">
                 3D Surface
+            </button>
+            <button id="show-connected" type="button"
+                    aria-controls="connected-view" aria-pressed="false">
+                V2 · Connected Exploration
             </button>
             <button id="show-bathymetry" type="button"
                     aria-controls="bathymetry-view" aria-pressed="false">
@@ -557,6 +561,10 @@ def home():
         </section>
 
 
+        <section id="connected-view" hidden aria-label="V2 connected spatial exploration">
+            <iframe id="connected-frame" title="V2 — Connected Spatial Exploration"
+                    data-source="/connected-exploration"></iframe>
+        </section>
         <section id="bathymetry-view" hidden aria-label="Historical bathymetry from the USP thesis">
             <iframe id="bathymetry-frame" title="Historical bathymetry — USP thesis (2002)"
                     data-source="/historical-bathymetry"></iframe>
@@ -565,6 +573,22 @@ def home():
 
         <script>
             const byId = id => document.getElementById(id);
+            // Single dashboard selection state shared with the same-origin V2 iframe.
+            window.taquaralSelection = {points: [], measuring: false};
+            function publishSelection(points, measuring) {
+                window.taquaralSelection = {
+                    points: points.map(p => ({lat: p.lat, lng: p.lng})),
+                    measuring: measuring
+                };
+                const frame = document.getElementById("connected-frame");
+                if (frame.contentWindow) {
+                    frame.contentWindow.postMessage(
+                        {type: "taquaral:state", ...window.taquaralSelection},
+                        window.location.origin
+                    );
+                }
+            }
+
 
             const numberFormat = new Intl.NumberFormat("en-US", {
                 maximumFractionDigits: 0
@@ -682,6 +706,7 @@ def home():
 
                 function setMeasuring(active) {
                     measuring = active;
+                    publishSelection(points, measuring);
                     byId("measure").setAttribute(
                         "aria-pressed",
                         String(active)
@@ -781,6 +806,7 @@ def home():
 
                     const point = L.latLng(latlng.lat, latlng.lng);
                     points.push(point);
+                    publishSelection(points, measuring);
 
                     const label = points.length === 1 ? "A" : "B";
 
@@ -819,6 +845,24 @@ def home():
 
                     calculateDistance();
                 }
+
+                window.addEventListener("message", function (event) {
+                    const frame = document.getElementById("connected-frame");
+                    if (event.origin !== window.location.origin || event.source !== frame.contentWindow) return;
+                    const message = event.data;
+                    if (message?.type === "taquaral:ready") {
+                        publishSelection(points, measuring);
+                    } else if (message?.type === "taquaral:start") {
+                        byId("measure").click();
+                    } else if (message?.type === "taquaral:clear") {
+                        clearMeasurement();
+                    } else if (message?.type === "taquaral:point" && measuring) {
+                        if (Number.isFinite(message.lat) && Number.isFinite(message.lng)
+                            && Math.abs(message.lat) <= 90 && Math.abs(message.lng) <= 180) {
+                            selectLocation(L.latLng(message.lat, message.lng));
+                        }
+                    }
+                });
 
                 map.on("click", function (event) {
                     selectLocation(event.latlng);
@@ -943,8 +987,11 @@ def home():
                 const bathymetryView = document.getElementById("bathymetry-view");
                 const bathymetryButton = document.getElementById("show-bathymetry");
                 const bathymetryFrame = document.getElementById("bathymetry-frame");
-                const views = [mapView, surfaceView, bathymetryView];
-                const buttons = [mapButton, surfaceButton, bathymetryButton];
+                const connectedView = document.getElementById("connected-view");
+                const connectedButton = document.getElementById("show-connected");
+                const connectedFrame = document.getElementById("connected-frame");
+                const views = [mapView, surfaceView, connectedView, bathymetryView];
+                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton];
                 function showView(index) {
                     views.forEach((view, i) => { view.hidden = i !== index; });
                     buttons.forEach((button, i) => {
@@ -953,9 +1000,13 @@ def home():
                     if (index === 0) {
                         requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
                     } else {
-                        const targetFrame = index === 1 ? frame : bathymetryFrame;
+                        const targetFrame = index === 1 ? frame : index === 2 ? connectedFrame : bathymetryFrame;
                         if (!targetFrame.hasAttribute("src")) {
                             targetFrame.src = targetFrame.dataset.source;
+                        } else if (index === 2) {
+                            requestAnimationFrame(() => connectedFrame.contentWindow.postMessage(
+                                {type: "taquaral:resize"}, window.location.origin
+                            ));
                         }
                     }
                 }
@@ -1023,3 +1074,47 @@ def historical_bathymetry_export(format: str = Query("json", pattern="^(json|csv
         media_type = "application/json"
     return Response(content=content, media_type=media_type,
                     headers={"Content-Disposition": f'attachment; filename="taquaral_v3_historical_bathymetry.{format}"'})
+
+
+@app.get("/connected-exploration", response_class=HTMLResponse)
+def connected_exploration_view():
+    return (BASE_DIR / "assets/connected_exploration.html").read_text(encoding="utf-8")
+
+
+@app.get("/assets/connected_exploration.js", include_in_schema=False)
+def connected_exploration_script():
+    from fastapi.responses import FileResponse
+    return FileResponse(BASE_DIR / "assets/connected_exploration.js", media_type="text/javascript")
+
+
+@app.get("/assets/plotly.min.js", include_in_schema=False)
+def local_plotly_library():
+    from plotly.offline import get_plotlyjs
+    return Response(get_plotlyjs(), media_type="text/javascript",
+                    headers={"Cache-Control": "public, max-age=3600"})
+
+
+@app.get("/api/surface-scene")
+def connected_surface_scene():
+    from connected_exploration import scene
+    return scene(get_lake_feature(read_water_data()))
+
+
+@app.get("/api/surface-point")
+def connected_surface_point(
+    lat: float = Query(..., ge=-90, le=90, allow_inf_nan=False),
+    lon: float = Query(..., ge=-180, le=180, allow_inf_nan=False),
+):
+    from connected_exploration import point
+    return point(lat, lon)
+
+
+@app.get("/api/surface-profile")
+def connected_surface_profile(
+    lat1: float = Query(..., ge=-90, le=90, allow_inf_nan=False),
+    lon1: float = Query(..., ge=-180, le=180, allow_inf_nan=False),
+    lat2: float = Query(..., ge=-90, le=90, allow_inf_nan=False),
+    lon2: float = Query(..., ge=-180, le=180, allow_inf_nan=False),
+):
+    from connected_exploration import profile
+    return profile(lat1, lon1, lat2, lon2)
