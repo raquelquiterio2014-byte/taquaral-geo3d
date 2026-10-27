@@ -1,0 +1,21 @@
+{
+  "source": "Copernicus DEM GLO-30 Public",
+  "source_url": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_S23_00_W048_00_DEM/Copernicus_DSM_COG_10_S23_00_W048_00_DEM.tif",
+  "prepared_at_utc": "2026-10-26T21:04:58.355226+00:00",
+  "study_bounds_west_south_east_north": [
+    -47.075,
+    -22.89,
+    -47.035,
+    -22.855
+  ],
+  "horizontal_reference": "WGS 84 / UTM zone 23S",
+  "vertical_reference": "EGM2008",
+  "model_type": "Digital Surface Model",
+  "nominal_sampling_m": 30,
+  "vertical_exaggeration": 1,
+  "valid_pixel_count": 18415,
+  "minimum_surface_elevation_m": 619.6907348632812,
+  "maximum_surface_elevation_m": 744.9898681640625,
+  "limitations": "May include vegetation and buildings. Does not represent underwater depth or individual trees. The study rectangle is not the official park boundary.",
+  "dataset_information": "https://registry.opendata.aws/copernicus-dem/"
+}
