@@ -4,7 +4,9 @@ An educational Python application for exploring Taquaral Lake and its surroundin
 in Campinas, São Paulo, Brazil. It combines an interactive map, geodesic measurements
 and a browser-based 3D surface viewer.
 
-**Current stage: V1 prototype — Parts 1, 2 and 3 implemented; V1 completion tasks remain.**
+**Latest delivery: V3 — Historical Bathymetry — Published Data Explorer.**
+
+V1 Parts 1–3 remain available. V1 completion tasks and V2 spatial synchronization remain pending; version numbers do not imply those tasks are finished.
 
 ## Implemented features
 
@@ -14,7 +16,7 @@ and a browser-based 3D surface viewer.
 | Part 2 — Geospatial Measurements | Downloaded water polygons, highlighted lake boundary, area and outer boundary metrics, selectable points A–B and geodesic distance |
 | Part 3 — Integrated 3D Surface Exploration | Copernicus GLO-30 processing, interactive Plotly surface, Map & Measurements and 3D Surface views in one FastAPI dashboard |
 
-All interface text is in English. A map click is an approximate selection, not a
+The application interface is in English. The thesis figure retains its original Portuguese labels, with English explanations provided alongside it. A map click is an approximate selection, not a
 surveyed reference. Switching dashboard views preserves the measurement state.
 The map and 3D view are not yet spatially synchronized.
 
@@ -63,6 +65,11 @@ present in `main.py`, and the helper exits without changing an integrated file.
 | GET `/api/lake-metrics` | Area, outer/inner boundary lengths and method |
 | GET `/api/distance?lat1=...&lon1=...&lat2=...&lon2=...` | WGS 84 geodesic distance in meters |
 | GET `/surface-3d` | Generated 3D HTML viewer |
+| GET `/historical-bathymetry` | V3 published historical data explorer |
+| GET `/historical-bathymetry/figure` | Thesis Figure 3 with source attribution |
+| GET `/api/historical-bathymetry` | Historical results, provenance and limitations |
+| GET `/api/historical-bathymetry/export?format=csv` | CSV download with provenance per metric |
+| GET `/api/historical-bathymetry/export?format=json` | Complete JSON download |
 | GET `/docs` | FastAPI API documentation |
 
 ## Data, methods and limitations
@@ -120,7 +127,7 @@ Only **V1** has three publication parts. Subsequent post numbers match software 
 | --- | --- | --- |
 | V1 | Mapping, measurements and integrated 3D surface | Current prototype; POIs, export buttons, further validation and documentation refinements remain |
 | V2 | Lake overlay on 3D, synchronized A–B points, elevation profile | Planned |
-| V3 | Bathymetry Explorer | Planned; requires suitable bathymetric reference data |
+| V3 | Historical Bathymetry — Published Data Explorer | Delivered within this scope: thesis metrics, historical map, provenance and exports; underwater reconstruction excluded |
 | V4 | Environmental Monitoring | Planned |
 | V5 | Change Analysis | Planned; depends on comparable campaigns |
 | V6 | Advanced Spatial Analysis | Planned; detailed datasets subject to availability |
@@ -141,3 +148,24 @@ tests/                          # API and measurement checks
 ```
 
 Developed by **Raquel Cruz** as a learning and portfolio project.
+
+
+## V3 — Historical Bathymetry — Published Data Explorer
+
+This work is being developed based on data published in the doctoral thesis by Esperanza Hernández Piedrahíta (USP, 2002). The Historical Bathymetry tab reports historical summary values and provenance, not current lake measurements or a reconstructed underwater surface. See [V3_SETUP.md](V3_SETUP.md) for source page numbers, unresolved station-depth discrepancies and update instructions.
+
+The source data are in `data/references/historical_bathymetry.json`; `/api/historical-bathymetry` exposes them with their limitations. The specific bathymetric survey date is unconfirmed. V2 remains planned. Underwater surface reconstruction is outside the agreed V3 scope and requires a separate future data/method evaluation.
+
+
+### V3 acceptance and attribution
+
+- English historical-data panel with direct attribution to Esperanza Hernández Piedrahíta (USP, 2002).
+- Five published summary metrics, exact source pages, and the Figure 3 reference image with a full-size link.
+- Separate thesis defense year, water-sampling year, and unconfirmed bathymetric survey date.
+- Explicit station-depth discrepancy, original map labels, and geometry/source limitations.
+- CSV and JSON exports carry provenance and limitations; invalid export formats return 422.
+- Existing OSM and geodesic functions remain available. Software tests do not validate historical survey accuracy.
+
+The original thesis is available at https://teses.usp.br/teses/disponiveis/18/18139/tde-01122016-130125/pt-br.html . Figure 3 is an attributed excerpt for study and analysis; the full thesis is not bundled. Consult the source for reuse conditions. The historical map is not a georeferenced layer and is not evidence of current depths.
+
+V3 verification: **14 automated tests passed** on Python 3.12, covering existing geodesic functions, historical attribution, figure serving, provenance-preserving exports and format validation. Automated browser review could not run in the build environment; visual confirmation on the author's Windows installation remains pending.

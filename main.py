@@ -3,9 +3,11 @@ import math
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from pyproj import Geod
 from shapely.geometry import shape
+from historical_bathymetry import (load_historical_bathymetry, render_historical_bathymetry,
+                                  export_historical_bathymetry_csv)
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -374,7 +376,7 @@ def home():
                 color: #10202b;
             }
 
-            #surface-view {
+            #surface-view, #bathymetry-view {
                 padding: 20px;
             }
 
@@ -393,7 +395,7 @@ def home():
                 color: #66e5c4;
             }
 
-            #surface-frame {
+            #surface-frame, #bathymetry-frame {
                 display: block;
                 width: 100%;
                 height: 78vh;
@@ -413,6 +415,10 @@ def home():
             <button id="show-surface" type="button"
                     aria-controls="surface-view" aria-pressed="false">
                 3D Surface
+            </button>
+            <button id="show-bathymetry" type="button"
+                    aria-controls="bathymetry-view" aria-pressed="false">
+                Historical Bathymetry
             </button>
         </nav>
 
@@ -510,8 +516,9 @@ def home():
                 </p>
 
                 <p class="note">
-                    Current stage: 2D mapping and geodesic measurements.
+                    2D mapping and geodesic measurements are available.
                     3D surface exploration is available in the 3D Surface tab.
+                    Published historical results are available in Historical Bathymetry.
                 </p>
             </aside>
 
@@ -550,6 +557,10 @@ def home():
         </section>
 
 
+        <section id="bathymetry-view" hidden aria-label="Historical bathymetry from the USP thesis">
+            <iframe id="bathymetry-frame" title="Historical bathymetry — USP thesis (2002)"
+                    data-source="/historical-bathymetry"></iframe>
+        </section>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
         <script>
@@ -929,30 +940,27 @@ def home():
                 const surfaceButton = document.getElementById("show-surface");
                 const frame = document.getElementById("surface-frame");
 
-                mapButton.addEventListener("click", function () {
-                    mapView.hidden = false;
-                    surfaceView.hidden = true;
-
-                    mapButton.setAttribute("aria-pressed", "true");
-                    surfaceButton.setAttribute("aria-pressed", "false");
-
-                    // Let Leaflet recalculate its size after becoming visible.
-                    requestAnimationFrame(function () {
-                        window.dispatchEvent(new Event("resize"));
+                const bathymetryView = document.getElementById("bathymetry-view");
+                const bathymetryButton = document.getElementById("show-bathymetry");
+                const bathymetryFrame = document.getElementById("bathymetry-frame");
+                const views = [mapView, surfaceView, bathymetryView];
+                const buttons = [mapButton, surfaceButton, bathymetryButton];
+                function showView(index) {
+                    views.forEach((view, i) => { view.hidden = i !== index; });
+                    buttons.forEach((button, i) => {
+                        button.setAttribute("aria-pressed", String(i === index));
                     });
-                });
-
-                surfaceButton.addEventListener("click", function () {
-                    mapView.hidden = true;
-                    surfaceView.hidden = false;
-
-                    mapButton.setAttribute("aria-pressed", "false");
-                    surfaceButton.setAttribute("aria-pressed", "true");
-
-                    // Load the 3D viewer only when first requested.
-                    if (!frame.hasAttribute("src")) {
-                        frame.src = frame.dataset.source;
+                    if (index === 0) {
+                        requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+                    } else {
+                        const targetFrame = index === 1 ? frame : bathymetryFrame;
+                        if (!targetFrame.hasAttribute("src")) {
+                            targetFrame.src = targetFrame.dataset.source;
+                        }
                     }
+                }
+                buttons.forEach((button, i) => {
+                    button.addEventListener("click", () => showView(i));
                 });
             })();
         </script>
@@ -982,3 +990,36 @@ def surface_3d_viewer():
         media_type="text/html",
         headers={"Cache-Control": "no-cache"},
     )
+
+
+@app.get("/api/historical-bathymetry")
+def historical_bathymetry_data():
+    return load_historical_bathymetry()
+
+
+@app.get("/historical-bathymetry", response_class=HTMLResponse)
+def historical_bathymetry_view():
+    return render_historical_bathymetry(load_historical_bathymetry())
+
+
+@app.get("/historical-bathymetry/figure", include_in_schema=False)
+def historical_bathymetry_figure():
+    from fastapi.responses import FileResponse
+
+    figure_path = BASE_DIR / "assets" / "thesis_2002_figure_3.png"
+    if not figure_path.is_file():
+        raise HTTPException(status_code=404, detail="Thesis figure not found. Copy the assets folder from the V3 update package.")
+    return FileResponse(figure_path, media_type="image/png")
+
+
+@app.get("/api/historical-bathymetry/export")
+def historical_bathymetry_export(format: str = Query("json", pattern="^(json|csv)$")):
+    data = load_historical_bathymetry()
+    if format == "csv":
+        content = export_historical_bathymetry_csv(data)
+        media_type = "text/csv"
+    else:
+        content = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+        media_type = "application/json"
+    return Response(content=content, media_type=media_type,
+                    headers={"Content-Disposition": f'attachment; filename="taquaral_v3_historical_bathymetry.{format}"'})

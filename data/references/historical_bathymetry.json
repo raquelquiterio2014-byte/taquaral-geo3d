@@ -1,0 +1,89 @@
+{
+  "version": "V3",
+  "status": "historical_published_results",
+  "notice": "This work is being developed based on data published in the doctoral thesis by Esperanza Hernández Piedrahíta (USP, 2002). These are historical results, not current measurements of Taquaral Lake.",
+  "source": {
+    "author": "Esperanza Hernández Piedrahíta",
+    "title": "Caracterização limnológica e estudo do processo de sedimentação e liberação de fósforo da Lagoa do Taquaral - Campinas (SP)",
+    "institution": "University of São Paulo (USP), São Carlos School of Engineering",
+    "defense_year": 2002,
+    "water_sampling_year": 2000,
+    "bathymetric_survey_date": null,
+    "url": "https://teses.usp.br/teses/disponiveis/18/18139/tde-01122016-130125/pt-br.html",
+    "metrics_printed_page": 20,
+    "metrics_pdf_page": 43,
+    "map_printed_page": 22,
+    "map_pdf_page": 45,
+    "reviewed_on": "2026-10-27",
+    "figure_asset": "assets/thesis_2002_figure_3.png",
+    "figure_processing": "Figure 3 extracted from PDF page 45, with page margins cropped. Labels, colors and depth classes retained; no georeferencing or depth interpolation."
+  },
+  "method": "The thesis describes a shoreline topographic traverse using a total station and unidirectional transects with echo-sounder depth measurements every 20 meters. Original sounding coordinates, survey date and vertical reference have not been established from the reviewed material.",
+  "metrics": {
+    "maximum_depth_m": 6.7,
+    "mean_depth_m": 2.9,
+    "volume_m3": 451739,
+    "area_m2": 155771.86,
+    "perimeter_m": 2543.97
+  },
+  "published_depth_classes_m": [
+    {
+      "lower": 0,
+      "upper": 1,
+      "label": "< 1 m"
+    },
+    {
+      "lower": 1,
+      "upper": 2,
+      "label": "1–2 m"
+    },
+    {
+      "lower": 2,
+      "upper": 3,
+      "label": "2–3 m"
+    },
+    {
+      "lower": 3,
+      "upper": 4,
+      "label": "3–4 m"
+    },
+    {
+      "lower": 4,
+      "upper": 5,
+      "label": "4–5 m"
+    },
+    {
+      "lower": 5,
+      "upper": 6,
+      "label": "5–6 m"
+    },
+    {
+      "lower": 6,
+      "upper": 6.7,
+      "label": "6–6.7 m"
+    }
+  ],
+  "station_depth_discrepancy": {
+    "abstract_m": {
+      "outlet": 5.7,
+      "central": 3.5
+    },
+    "methods_section_m": {
+      "outlet": 5.5,
+      "central": 3.7
+    },
+    "printed_page": 21,
+    "pdf_page": 44,
+    "resolution": "Unresolved. Neither pair is used as verified georeferenced soundings."
+  },
+  "limitations": [
+    "No original georeferenced sounding dataset has been obtained.",
+    "The specific bathymetric survey date is unconfirmed; water sampling in 2000 does not establish the survey date.",
+    "The published depth map has not been georeferenced or digitized.",
+    "No underwater surface or current volume is inferred from these summary values.",
+    "Historical thesis geometry and the downloaded OpenStreetMap boundary use different sources and dates; their differences are not evidence of lake change.",
+    "Only Figure 3 is included for source-based study and analysis with attribution; the complete thesis PDF is not included. Consult the original source for its conditions of use."
+  ],
+  "release_name": "Historical Bathymetry — Published Data Explorer",
+  "release_scope": "Published historical metrics, source figure, attribution, provenance, consistency notes and CSV/JSON exports. No underwater surface reconstruction."
+}
