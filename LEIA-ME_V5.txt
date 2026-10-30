@@ -1,0 +1,22 @@
+TAQUARAL GEO3D — V5: COMPARAÇÃO DE CAMPANHAS HISTÓRICAS
+
+1. Pare o servidor com Ctrl+C. Faça uma cópia de segurança do projeto.
+2. Extraia este ZIP e abra a pasta que contém main.py.
+3. Copie o conteúdo dessa pasta para a pasta do projeto no PyCharm, substituindo os arquivos existentes.
+4. Mantenha sua pasta .venv e sua pasta outputs atual. O HTML 3D já gerado deve ser preservado.
+5. No terminal do PyCharm, na raiz do projeto, execute:
+   .\.venv\Scripts\python.exe -m uvicorn main:app --reload
+6. Abra http://127.0.0.1:8000 e pressione Ctrl+F5.
+7. Selecione V5 · Campaign Comparison.
+
+PRIMEIRO TESTE
+Use Dissolved oxygen, campanha A = March, campanha B = August, ambas as estações.
+Serão exibidos 8 registros de superfície, quatro resumos e diferenças por estação.
+Para E1, o centro da campanha A será 7,41 mg/L; o da campanha B, 10,985 mg/L; a diferença B menos A, 3,575 mg/L. São cálculos a partir das observações de 2000, não novas medições.
+
+Experimente os quatro parâmetros, a seleção de uma estação e as exportações. Para pH, o resumo usa mediana e as diferenças são em unidades de pH, sem percentuais.
+
+As classificações chuvoso, intermediário e seco foram conferidas nos cabeçalhos das tabelas 4–7 da tese. Os dados não indicam condições atuais da lagoa.
+
+Esta entrega inclui a V4 e as correções recentes da seleção A–B. Não execute novamente os antigos integradores/instaladores para abrir a V5.
+Se o ambiente V4 já funcionava, nenhuma nova dependência é necessária. Para uma instalação nova, consulte README.md e requirements.txt.

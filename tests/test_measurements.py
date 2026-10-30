@@ -33,13 +33,12 @@ def test_lake_metrics_match_documented_snapshot():
 
 
 def test_distance_is_zero_for_identical_points_and_symmetric():
-    a = {'lat1': -22.875038, 'lon1': -47.057190,
-         'lat2': -22.873220, 'lon2': -47.046676}
+    a = {'lat1': -22.8744274, 'lon1': -47.0488455, 'lat2': -22.8744274, 'lon2': -47.0478455}
     distance = client.get('/api/distance', params=a).json()['distance_m']
     reverse = dict(lat1=a['lat2'], lon1=a['lon2'],
                    lat2=a['lat1'], lon2=a['lon1'])
     assert client.get('/api/distance', params=reverse).json()['distance_m'] == pytest.approx(distance)
-    assert round(distance) == 1098
+    assert round(distance) == 103
     a.update(lat2=a['lat1'], lon2=a['lon1'])
     assert client.get('/api/distance', params=a).json()['distance_m'] == 0
 

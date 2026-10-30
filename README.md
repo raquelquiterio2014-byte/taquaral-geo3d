@@ -192,3 +192,8 @@ Data: `data/references/historical_water_quality.csv` and its metadata JSON. Sour
 V4 endpoints: `/environmental-monitoring`, `/api/historical-water-quality`, and `/api/historical-water-quality/export?format=csv` or `format=json`. Optional filters: `parameter`, `station`, `start`, `end`.
 
 V4 initial delivery verification: **30 tests passed**, covering existing V1–V3 functions, selected source-cell alignment, historical provenance, filter/export consistency and rejection of invalid or duplicate records. JavaScript syntax and Python compilation checks passed. Interactive visual review remains pending on Windows.
+
+
+## V5 — Historical Campaign Comparison
+
+The new **V5 · Campaign Comparison** tab compares reviewed surface observations from the March, May and August 2000 campaigns described in the thesis. Select two campaigns and a parameter; inspect station-specific summaries, signed differences, individual observations, original table excerpts and provenance-preserving CSV/JSON exports. The pH center is the median of reported values, not a mean concentration. No interpolation, percentages, current-condition claims or long-term inference are produced. See [V5_SETUP.md](V5_SETUP.md) for methods, installation and pending manual checks.

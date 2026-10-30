@@ -381,7 +381,7 @@ def home():
                 color: #10202b;
             }
 
-            #surface-view, #bathymetry-view, #connected-view, #environment-view {
+            #surface-view, #bathymetry-view, #connected-view, #environment-view, #campaign-view {
                 padding: 20px;
             }
 
@@ -400,7 +400,7 @@ def home():
                 color: #66e5c4;
             }
 
-            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame {
+            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame, #campaign-frame {
                 display: block;
                 width: 100%;
                 height: 78vh;
@@ -432,6 +432,7 @@ def home():
             <button id="show-environment" type="button" aria-controls="environment-view" aria-pressed="false">
                 V4 · Water Quality
             </button>
+            <button id="show-campaign" type="button" aria-controls="campaign-view" aria-pressed="false">V5 · Campaign Comparison</button>
         </nav>
 
 
@@ -569,6 +570,9 @@ def home():
         </section>
 
 
+        <section id="campaign-view" hidden aria-label="V5 historical campaign comparison">
+            <iframe id="campaign-frame" title="V5 — Historical Campaign Comparison" data-source="/campaign-comparison"></iframe>
+        </section>
         <section id="environment-view" hidden aria-label="V4 historical water quality">
             <iframe id="environment-frame" title="V4 — Historical Water Quality Explorer"
                     data-source="/environmental-monitoring"></iframe>
@@ -1022,9 +1026,12 @@ def home():
                 const environmentView = document.getElementById("environment-view");
                 const environmentButton = document.getElementById("show-environment");
                 const environmentFrame = document.getElementById("environment-frame");
-                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView];
-                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton];
-                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame];
+                const campaignView = document.getElementById("campaign-view");
+                const campaignButton = document.getElementById("show-campaign");
+                const campaignFrame = document.getElementById("campaign-frame");
+                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView, campaignView];
+                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton, campaignButton];
+                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame, campaignFrame];
                 function showView(index) {
                     views.forEach((view, i) => { view.hidden = i !== index; });
                     buttons.forEach((button, i) => {
@@ -1036,9 +1043,9 @@ def home():
                         const targetFrame = frames[index];
                         if (!targetFrame.hasAttribute("src")) {
                             targetFrame.src = targetFrame.dataset.source;
-                        } else if (index === 2 || index === 4) {
+                        } else if (index === 2 || index === 4 || index === 5) {
                             requestAnimationFrame(() => targetFrame.contentWindow.postMessage(
-                                {type: index === 2 ? "taquaral:resize" : "taquaral:environment-resize"}, window.location.origin
+                                {type: index === 2 ? "taquaral:resize" : index === 4 ? "taquaral:environment-resize" : "taquaral:campaign-resize"}, window.location.origin
                             ));
                         }
                     }
@@ -1222,3 +1229,51 @@ def lake_selection(
     lon1: float | None = Query(None, ge=-180, le=180, allow_inf_nan=False),
 ):
     return require_lake_selection(lat, lon, lat1, lon1)
+
+
+@app.get("/campaign-comparison", response_class=HTMLResponse)
+def campaign_comparison_view():
+    return (BASE_DIR / "assets/campaign_comparison.html").read_text(encoding="utf-8")
+
+
+@app.get("/assets/campaign_comparison.js", include_in_schema=False)
+def campaign_comparison_script():
+    from fastapi.responses import FileResponse
+    return FileResponse(BASE_DIR / "assets/campaign_comparison.js", media_type="text/javascript")
+
+
+def historical_campaign_selection(
+    parameter: Literal["dissolved_oxygen", "water_temperature", "ph", "conductivity"] = Query("dissolved_oxygen"),
+    campaign_a: Literal["march", "may", "august"] = Query("march"),
+    campaign_b: Literal["march", "may", "august"] = Query("august"),
+    station: Literal["E1", "E2"] | None = Query(None),
+):
+    from campaign_comparison import compare_campaigns
+    if campaign_a == campaign_b:
+        raise HTTPException(422, "Choose two different campaigns.")
+    try:
+        return compare_campaigns(parameter, campaign_a, campaign_b, station)
+    except (OSError, ValueError, KeyError) as exc:
+        raise HTTPException(503, "Historical comparison unavailable: reviewed source data failed validation. Restore the V4 dataset; no missing values are filled.") from exc
+
+
+@app.get("/api/historical-campaign-comparison")
+def historical_campaign_comparison(selection=Depends(historical_campaign_selection)):
+    return selection
+
+
+@app.get("/api/historical-campaign-comparison/export")
+def historical_campaign_export(
+    format: Literal["csv", "json"] = Query("json"),
+    section: Literal["observations", "summaries", "campaign_differences", "within_campaign_changes", "station_differences"] = Query("observations"),
+    selection=Depends(historical_campaign_selection),
+):
+    from campaign_comparison import export_csv
+    if format == "csv":
+        content = export_csv(selection, section)
+        media_type = "text/csv"
+    else:
+        content = json.dumps(selection, ensure_ascii=False, indent=2) + "\n"
+        media_type = "application/json"
+    return Response(content, media_type=media_type,
+                    headers={"Content-Disposition": f'attachment; filename="taquaral_v5_{section}.{format}"'})

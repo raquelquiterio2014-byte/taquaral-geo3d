@@ -8,7 +8,7 @@ import main
 import connected_exploration as ce
 
 client = TestClient(main.app)
-PAIR = {'lat1': -22.875038, 'lon1': -47.057190, 'lat2': -22.873220, 'lon2': -47.046676}
+PAIR = {'lat1': -22.8744274, 'lon1': -47.0488455, 'lat2': -22.8744274, 'lon2': -47.0478455}
 
 
 def test_profile_preserves_endpoints_and_geodesic_distance():
@@ -16,7 +16,7 @@ def test_profile_preserves_endpoints_and_geodesic_distance():
     assert r.status_code == 200
     p = r.json()
     assert p['distance_m'] == pytest.approx(client.get('/api/distance', params=PAIR).json()['distance_m'])
-    assert round(p['distance_m']) == 1098
+    assert round(p['distance_m']) == 103
     assert 0 < p['sample_spacing_m'] <= 30
     assert p['samples'][0]['latitude'] == PAIR['lat1']
     assert p['samples'][-1]['longitude'] == PAIR['lon2']
@@ -74,9 +74,9 @@ def test_nearest_cell_nodata_and_bounds(tmp_path, monkeypatch):
     assert ce.sample(-22.8705,-47.0585) is None
     assert ce.sample(-22.872,-47.0595) is None
     assert ce.sample(-22.8705,-47.058) is None
-    r = client.get('/api/surface-profile',params={'lat1':-22.8705,'lon1':-47.0595,'lat2':-22.8705,'lon2':-47.0585})
-    assert r.status_code == 200
-    assert r.json()['samples'][-1]['elevation_m'] is None
+    # Test raster NoData independently of the HTTP lake-only selection constraint.
+    result = ce.profile(-22.8705,-47.0595,-22.8705,-47.0585)
+    assert result['samples'][-1]['elevation_m'] is None
 
 
 def test_v2_assets_and_v3_are_separate():
