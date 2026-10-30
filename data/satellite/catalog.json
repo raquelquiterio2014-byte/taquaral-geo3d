@@ -1,0 +1,891 @@
+{
+  "version": "V7",
+  "title": "Historical Satellite Explorer",
+  "prepared_utc": "2026-10-30T21:45:43.796307+00:00",
+  "scenes": [
+    {
+      "id": "S2B_23KKQ_20251005_0_L2A",
+      "datetime": "2025-10-05T13:28:40.110000Z",
+      "platform": "sentinel-2b",
+      "scene_cloud_percent": 0.00204,
+      "native_rgb_resolution_m": 10,
+      "bands": [
+        "B04",
+        "B03",
+        "B02"
+      ],
+      "bounds": [
+        [
+          -22.879204105663632,
+          -47.060178576475515
+        ],
+        [
+          -22.868772268035173,
+          -47.04290247229486
+        ]
+      ],
+      "image": "/api/satellite/image/S2B_23KKQ_20251005_0_L2A",
+      "stac_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2B_23KKQ_20251005_0_L2A",
+      "assets": {
+        "visual": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/23/K/KQ/2025/10/S2B_23KKQ_20251005_0_L2A/TCI.tif",
+        "scl": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/23/K/KQ/2025/10/S2B_23KKQ_20251005_0_L2A/SCL.tif"
+      },
+      "quality": {
+        "scl_native_resolution_m": 20,
+        "roi": {
+          "pixel_count": 5016,
+          "valid_percent": 100.0,
+          "cloud_shadow_snow_percent": 0.0,
+          "class_counts": {
+            "0": 0,
+            "1": 0,
+            "2": 72,
+            "3": 0,
+            "4": 1340,
+            "5": 3384,
+            "6": 220,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0
+          }
+        },
+        "lake_pixel_centers": {
+          "pixel_count": 375,
+          "valid_percent": 100.0,
+          "cloud_shadow_snow_percent": 0.0,
+          "class_counts": {
+            "0": 0,
+            "1": 0,
+            "2": 47,
+            "3": 0,
+            "4": 26,
+            "5": 98,
+            "6": 204,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0
+          }
+        },
+        "method": "SCL classes 3,8,9,10,11 flag shadows, clouds, cirrus or snow; 0/1 invalid. Pixel centers within current OSM lake polygon; approximate screening, not independent cloud validation."
+      },
+      "rgb_sha256": "98ed1eaafa9baa81cc8081ab8380a9249238536af947ae445a77986f73f57019"
+    },
+    {
+      "id": "S2B_23KKQ_20251022_0_L2A",
+      "datetime": "2025-10-22T13:18:44.981000Z",
+      "platform": "sentinel-2b",
+      "scene_cloud_percent": 0.193008,
+      "native_rgb_resolution_m": 10,
+      "bands": [
+        "B04",
+        "B03",
+        "B02"
+      ],
+      "bounds": [
+        [
+          -22.879204105663632,
+          -47.060178576475515
+        ],
+        [
+          -22.868772268035173,
+          -47.04290247229486
+        ]
+      ],
+      "image": "/api/satellite/image/S2B_23KKQ_20251022_0_L2A",
+      "stac_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2B_23KKQ_20251022_0_L2A",
+      "assets": {
+        "visual": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/23/K/KQ/2025/10/S2B_23KKQ_20251022_0_L2A/TCI.tif",
+        "scl": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/23/K/KQ/2025/10/S2B_23KKQ_20251022_0_L2A/SCL.tif"
+      },
+      "quality": {
+        "scl_native_resolution_m": 20,
+        "roi": {
+          "pixel_count": 5016,
+          "valid_percent": 100.0,
+          "cloud_shadow_snow_percent": 0.0,
+          "class_counts": {
+            "0": 0,
+            "1": 0,
+            "2": 48,
+            "3": 0,
+            "4": 1609,
+            "5": 3113,
+            "6": 246,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0
+          }
+        },
+        "lake_pixel_centers": {
+          "pixel_count": 375,
+          "valid_percent": 100.0,
+          "cloud_shadow_snow_percent": 0.0,
+          "class_counts": {
+            "0": 0,
+            "1": 0,
+            "2": 27,
+            "3": 0,
+            "4": 39,
+            "5": 79,
+            "6": 230,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0
+          }
+        },
+        "method": "SCL classes 3,8,9,10,11 flag shadows, clouds, cirrus or snow; 0/1 invalid. Pixel centers within current OSM lake polygon; approximate screening, not independent cloud validation."
+      },
+      "rgb_sha256": "65afebb15f31e498c5c8f97c1f6e60daf2d39df013c8e4170ed65e6a877fb461"
+    },
+    {
+      "id": "S2A_23KKQ_20251228_0_L2A",
+      "datetime": "2025-12-28T13:19:05.536000Z",
+      "platform": "sentinel-2a",
+      "scene_cloud_percent": 0.058632,
+      "native_rgb_resolution_m": 10,
+      "bands": [
+        "B04",
+        "B03",
+        "B02"
+      ],
+      "bounds": [
+        [
+          -22.879204105663632,
+          -47.060178576475515
+        ],
+        [
+          -22.868772268035173,
+          -47.04290247229486
+        ]
+      ],
+      "image": "/api/satellite/image/S2A_23KKQ_20251228_0_L2A",
+      "stac_url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2A_23KKQ_20251228_0_L2A",
+      "assets": {
+        "visual": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/23/K/KQ/2025/12/S2A_23KKQ_20251228_0_L2A/TCI.tif",
+        "scl": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/23/K/KQ/2025/12/S2A_23KKQ_20251228_0_L2A/SCL.tif"
+      },
+      "quality": {
+        "scl_native_resolution_m": 20,
+        "roi": {
+          "pixel_count": 5016,
+          "valid_percent": 100.0,
+          "cloud_shadow_snow_percent": 0.0,
+          "class_counts": {
+            "0": 0,
+            "1": 0,
+            "2": 38,
+            "3": 0,
+            "4": 1908,
+            "5": 2890,
+            "6": 180,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0
+          }
+        },
+        "lake_pixel_centers": {
+          "pixel_count": 375,
+          "valid_percent": 100.0,
+          "cloud_shadow_snow_percent": 0.0,
+          "class_counts": {
+            "0": 0,
+            "1": 0,
+            "2": 15,
+            "3": 0,
+            "4": 52,
+            "5": 139,
+            "6": 169,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0
+          }
+        },
+        "method": "SCL classes 3,8,9,10,11 flag shadows, clouds, cirrus or snow; 0/1 invalid. Pixel centers within current OSM lake polygon; approximate screening, not independent cloud validation."
+      },
+      "rgb_sha256": "67bff49faa58df1fd192b3096eee7a23c47284ef0672fcd58ab494362ad8cd9e"
+    }
+  ],
+  "lake": {
+    "type": "Feature",
+    "properties": {
+      "element": "relation",
+      "id": 17154522,
+      "name": "Lagoa Isaura Teles Alves de Lima",
+      "natural": "water",
+      "water": "lake"
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -47.0572742,
+            -22.8751908
+          ],
+          [
+            -47.0572194,
+            -22.8751378
+          ],
+          [
+            -47.0571479,
+            -22.8750936
+          ],
+          [
+            -47.0570161,
+            -22.8750599
+          ],
+          [
+            -47.0568729,
+            -22.8750313
+          ],
+          [
+            -47.0567087,
+            -22.8750112
+          ],
+          [
+            -47.0565328,
+            -22.8750267
+          ],
+          [
+            -47.0565092,
+            -22.8750785
+          ],
+          [
+            -47.0565462,
+            -22.8751095
+          ],
+          [
+            -47.056604,
+            -22.8751303
+          ],
+          [
+            -47.0566417,
+            -22.875154
+          ],
+          [
+            -47.0567021,
+            -22.8751783
+          ],
+          [
+            -47.056765,
+            -22.8751957
+          ],
+          [
+            -47.0568316,
+            -22.8752088
+          ],
+          [
+            -47.0569094,
+            -22.8752373
+          ],
+          [
+            -47.0569781,
+            -22.8752725
+          ],
+          [
+            -47.0570426,
+            -22.8753237
+          ],
+          [
+            -47.0569569,
+            -22.8753811
+          ],
+          [
+            -47.0568945,
+            -22.875404
+          ],
+          [
+            -47.0568142,
+            -22.8754155
+          ],
+          [
+            -47.0567339,
+            -22.8754204
+          ],
+          [
+            -47.0566631,
+            -22.8753208
+          ],
+          [
+            -47.0565478,
+            -22.8752496
+          ],
+          [
+            -47.056397,
+            -22.8751672
+          ],
+          [
+            -47.0562623,
+            -22.8750574
+          ],
+          [
+            -47.0562285,
+            -22.8749567
+          ],
+          [
+            -47.0562242,
+            -22.8748579
+          ],
+          [
+            -47.0561416,
+            -22.8747922
+          ],
+          [
+            -47.0560372,
+            -22.8747667
+          ],
+          [
+            -47.0559062,
+            -22.8747394
+          ],
+          [
+            -47.0557909,
+            -22.8747268
+          ],
+          [
+            -47.0557199,
+            -22.8747725
+          ],
+          [
+            -47.0555735,
+            -22.8748156
+          ],
+          [
+            -47.0554168,
+            -22.8748033
+          ],
+          [
+            -47.0544565,
+            -22.8749659
+          ],
+          [
+            -47.0541156,
+            -22.8749891
+          ],
+          [
+            -47.0537889,
+            -22.875104
+          ],
+          [
+            -47.0536093,
+            -22.8751615
+          ],
+          [
+            -47.053446,
+            -22.8751852
+          ],
+          [
+            -47.0532635,
+            -22.8751279
+          ],
+          [
+            -47.0530688,
+            -22.8750518
+          ],
+          [
+            -47.0527485,
+            -22.874914
+          ],
+          [
+            -47.0522803,
+            -22.875014
+          ],
+          [
+            -47.0521074,
+            -22.8749526
+          ],
+          [
+            -47.0520609,
+            -22.8748937
+          ],
+          [
+            -47.0518258,
+            -22.8748463
+          ],
+          [
+            -47.0516825,
+            -22.8748618
+          ],
+          [
+            -47.0515581,
+            -22.8748226
+          ],
+          [
+            -47.0515101,
+            -22.8747145
+          ],
+          [
+            -47.0512018,
+            -22.8745442
+          ],
+          [
+            -47.0505764,
+            -22.8740671
+          ],
+          [
+            -47.0504708,
+            -22.8739865
+          ],
+          [
+            -47.0503725,
+            -22.8738626
+          ],
+          [
+            -47.0502299,
+            -22.8737041
+          ],
+          [
+            -47.0499188,
+            -22.8733889
+          ],
+          [
+            -47.0497288,
+            -22.8733019
+          ],
+          [
+            -47.049142,
+            -22.8731863
+          ],
+          [
+            -47.0490747,
+            -22.8731778
+          ],
+          [
+            -47.0489861,
+            -22.8731858
+          ],
+          [
+            -47.048861,
+            -22.8732276
+          ],
+          [
+            -47.0487069,
+            -22.8732612
+          ],
+          [
+            -47.0485076,
+            -22.8732433
+          ],
+          [
+            -47.0483461,
+            -22.8732734
+          ],
+          [
+            -47.048174,
+            -22.8733014
+          ],
+          [
+            -47.0480412,
+            -22.8733145
+          ],
+          [
+            -47.0479516,
+            -22.873288
+          ],
+          [
+            -47.0479208,
+            -22.8732202
+          ],
+          [
+            -47.0478992,
+            -22.8731546
+          ],
+          [
+            -47.0478149,
+            -22.8730761
+          ],
+          [
+            -47.0477224,
+            -22.8730911
+          ],
+          [
+            -47.0476627,
+            -22.8730572
+          ],
+          [
+            -47.0475278,
+            -22.8728818
+          ],
+          [
+            -47.0474499,
+            -22.872791
+          ],
+          [
+            -47.0473313,
+            -22.8727311
+          ],
+          [
+            -47.0472037,
+            -22.8727601
+          ],
+          [
+            -47.0470842,
+            -22.8728137
+          ],
+          [
+            -47.0469415,
+            -22.8729444
+          ],
+          [
+            -47.0468927,
+            -22.8730532
+          ],
+          [
+            -47.046743,
+            -22.873159
+          ],
+          [
+            -47.046766,
+            -22.8731999
+          ],
+          [
+            -47.0467609,
+            -22.8732516
+          ],
+          [
+            -47.0465454,
+            -22.8735173
+          ],
+          [
+            -47.0464907,
+            -22.8735371
+          ],
+          [
+            -47.0464324,
+            -22.8735322
+          ],
+          [
+            -47.0464012,
+            -22.8736816
+          ],
+          [
+            -47.0463768,
+            -22.8737598
+          ],
+          [
+            -47.0463756,
+            -22.873842
+          ],
+          [
+            -47.046351,
+            -22.8739135
+          ],
+          [
+            -47.0464072,
+            -22.8739767
+          ],
+          [
+            -47.0464378,
+            -22.8740399
+          ],
+          [
+            -47.0464835,
+            -22.8741107
+          ],
+          [
+            -47.0464942,
+            -22.8741664
+          ],
+          [
+            -47.0465324,
+            -22.8742558
+          ],
+          [
+            -47.0466014,
+            -22.8743612
+          ],
+          [
+            -47.0466832,
+            -22.8744936
+          ],
+          [
+            -47.0467669,
+            -22.8745759
+          ],
+          [
+            -47.0469031,
+            -22.8746241
+          ],
+          [
+            -47.0471415,
+            -22.8746975
+          ],
+          [
+            -47.047338,
+            -22.8747989
+          ],
+          [
+            -47.047518,
+            -22.8748432
+          ],
+          [
+            -47.0477162,
+            -22.874804
+          ],
+          [
+            -47.0479077,
+            -22.8748446
+          ],
+          [
+            -47.0482508,
+            -22.8748162
+          ],
+          [
+            -47.048362,
+            -22.8748003
+          ],
+          [
+            -47.0484358,
+            -22.8747967
+          ],
+          [
+            -47.0484999,
+            -22.8748305
+          ],
+          [
+            -47.0487745,
+            -22.8750023
+          ],
+          [
+            -47.0488654,
+            -22.8750667
+          ],
+          [
+            -47.0490728,
+            -22.8751686
+          ],
+          [
+            -47.049396,
+            -22.8753051
+          ],
+          [
+            -47.0497675,
+            -22.8754043
+          ],
+          [
+            -47.0502841,
+            -22.8755032
+          ],
+          [
+            -47.0506205,
+            -22.8755694
+          ],
+          [
+            -47.051325,
+            -22.8756551
+          ],
+          [
+            -47.0516999,
+            -22.8757224
+          ],
+          [
+            -47.0518902,
+            -22.8757129
+          ],
+          [
+            -47.052186,
+            -22.8756719
+          ],
+          [
+            -47.05228,
+            -22.8757069
+          ],
+          [
+            -47.0523382,
+            -22.8757733
+          ],
+          [
+            -47.0524166,
+            -22.8758585
+          ],
+          [
+            -47.0526181,
+            -22.8758637
+          ],
+          [
+            -47.0527295,
+            -22.8759114
+          ],
+          [
+            -47.0529646,
+            -22.8760215
+          ],
+          [
+            -47.0532179,
+            -22.8760546
+          ],
+          [
+            -47.0533754,
+            -22.8760898
+          ],
+          [
+            -47.0534583,
+            -22.8760218
+          ],
+          [
+            -47.0535539,
+            -22.8760493
+          ],
+          [
+            -47.0536287,
+            -22.8760098
+          ],
+          [
+            -47.0537269,
+            -22.8759896
+          ],
+          [
+            -47.0538393,
+            -22.8760826
+          ],
+          [
+            -47.0539799,
+            -22.8761568
+          ],
+          [
+            -47.0542481,
+            -22.8761938
+          ],
+          [
+            -47.0545923,
+            -22.8761492
+          ],
+          [
+            -47.0548043,
+            -22.8760723
+          ],
+          [
+            -47.0554169,
+            -22.8756767
+          ],
+          [
+            -47.055556,
+            -22.8756133
+          ],
+          [
+            -47.0556795,
+            -22.8755988
+          ],
+          [
+            -47.0558118,
+            -22.8755981
+          ],
+          [
+            -47.0558686,
+            -22.8755662
+          ],
+          [
+            -47.0559534,
+            -22.8755644
+          ],
+          [
+            -47.0560358,
+            -22.8755927
+          ],
+          [
+            -47.0560996,
+            -22.8756253
+          ],
+          [
+            -47.0561753,
+            -22.8756595
+          ],
+          [
+            -47.0562789,
+            -22.8756766
+          ],
+          [
+            -47.0563224,
+            -22.8756254
+          ],
+          [
+            -47.056386,
+            -22.87559
+          ],
+          [
+            -47.0564565,
+            -22.8756204
+          ],
+          [
+            -47.0565709,
+            -22.8755459
+          ],
+          [
+            -47.0566336,
+            -22.8755476
+          ],
+          [
+            -47.0566786,
+            -22.875555
+          ],
+          [
+            -47.0567619,
+            -22.8755072
+          ],
+          [
+            -47.0569089,
+            -22.875509
+          ],
+          [
+            -47.0571037,
+            -22.8754686
+          ],
+          [
+            -47.0572658,
+            -22.875439
+          ],
+          [
+            -47.0573323,
+            -22.8753752
+          ],
+          [
+            -47.0573296,
+            -22.875275
+          ],
+          [
+            -47.0572742,
+            -22.8751908
+          ]
+        ]
+      ]
+    }
+  },
+  "source": "Contains modified Copernicus Sentinel data (2025), accessed through Earth Search / AWS Sentinel-2 L2A COGs.",
+  "source_url": "https://registry.opendata.aws/sentinel-2-l2a-cogs/",
+  "method": "Provider true-color TCI (B04/B03/B02), 8-bit display product at native 10 m; bounded source-grid crops. PNG display reprojected to EPSG:3857 with nearest-neighbor sampling for Leaflet. No per-date custom stretch or cloud removal. SCL screening at 20 m.",
+  "limitations": [
+    "Historical educational imagery; not live monitoring.",
+    "TCI is a display product, not quantitative reflectance. Color differences may reflect atmosphere, lighting, processing or viewing conditions.",
+    "Scene-wide cloud percentage does not describe only the lake. SCL screening can miss thin cloud and mixes shoreline pixels.",
+    "10 m sampling limits visible detail. Zoom does not add spatial resolution.",
+    "The same OSM outline is shown on every date; it is not a date-specific shoreline measurement.",
+    "Images do not establish water depth, chemistry, pollution, vegetation species or causes of apparent change.",
+    "2025 imagery is separate from the thesis's 2000 field records; no temporal validation is implied."
+  ],
+  "aerial_reference": {
+    "type": "aerial_orthophoto",
+    "mosaic_period": "2023/2024",
+    "local_acquisition_day": "unconfirmed",
+    "source": "IGC / IDE-SP",
+    "source_native_gsd_m": 0.25,
+    "preview_dimensions": [
+      1024,
+      640
+    ],
+    "request_url": "https://www.idesp.sp.gov.br/geoimage/idesp_raster/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A4326&LAYERS=ORTOFOTOS_SP_2023_2024&STYLES=&BBOX=-47.059%2C-22.878%2C-47.045%2C-22.870&WIDTH=1024&HEIGHT=640&FORMAT=image%2Fpng&TRANSPARENT=TRUE",
+    "source_metadata_url": "https://www.idesp.sp.gov.br/geonetwork/srv/api/records/86bc2552-5c53-49e3-b8fe-7cb7cd0b9181/formatters/xml",
+    "note": "Optional online WMS portrayal, coarser than native GSD; not a satellite image or LiDAR point cloud. Exact flight day and reuse terms are not established here."
+  }
+}

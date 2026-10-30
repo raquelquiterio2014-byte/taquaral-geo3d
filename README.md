@@ -202,3 +202,8 @@ The new **V5 · Campaign Comparison** tab compares reviewed surface observations
 ## V6 — Spatial Context & Surface Analysis
 
 The **V6 · Spatial Context** tab constructs cumulative 100/250/500 m surroundings or disjoint rings in EPSG:32723, excludes mapped water, and summarizes Copernicus DSM elevation and surface slope on a 30 m projected grid. A valid, water-free 3×3 neighborhood is required for slope. The interactive map offers raster layers and zone outlines, with CSV/JSON/GeoJSON exports, coverage, cell counts and source provenance. It is not bare-earth terrain, drainage, flood risk, a legal buffer or bathymetry; no LiDAR or land-use layer is included. See [V6_SETUP.md](V6_SETUP.md) for methods, installation and pending browser checks.
+
+
+## V7 — Historical Satellite Explorer
+
+Integrated side-by-side true-color Sentinel-2 imagery, three curated 2025 acquisitions, shared OSM outline, linked map navigation, scene-wide and local SCL cloud screening, and downloadable provenance. Historical educational images; no depth or chemical water-quality inference. Native RGB 10 m, SCL 20 m. Includes small real crops; no account/key needed for local viewing. See [V7 setup and limits](docs/V7_SETUP.md).

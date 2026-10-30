@@ -1,0 +1,15 @@
+TAQUARAL GEO3D — V7
+
+Pare o servidor com Ctrl+C. Faça uma cópia de segurança fora da pasta do projeto.
+Copie os arquivos deste pacote para o projeto, substituindo os de mesmo nome.
+Mantenha sua .venv e os arquivos já gerados na pasta outputs.
+
+No terminal do projeto:
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m uvicorn main:app --reload
+
+Abra http://127.0.0.1:8000 e clique em V7 · Satellite Explorer.
+As três imagens reais de 2025 já estão incluídas. Não é necessário baixar novamente.
+A interface e a documentação técnica estão em inglês.
+As imagens são dados históricos educacionais; não mostram profundidade ou qualidade química da água.
+Leia docs/V7_SETUP.md para os testes no navegador.

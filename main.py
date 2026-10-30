@@ -381,7 +381,7 @@ def home():
                 color: #10202b;
             }
 
-            #surface-view, #bathymetry-view, #connected-view, #environment-view, #campaign-view, #spatial-view {
+            #surface-view, #bathymetry-view, #connected-view, #environment-view, #campaign-view, #spatial-view, #satellite-view {
                 padding: 20px;
             }
 
@@ -400,7 +400,7 @@ def home():
                 color: #66e5c4;
             }
 
-            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame, #campaign-frame, #spatial-frame {
+            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame, #campaign-frame, #spatial-frame, #satellite-frame {
                 display: block;
                 width: 100%;
                 height: 78vh;
@@ -434,6 +434,7 @@ def home():
             </button>
             <button id="show-campaign" type="button" aria-controls="campaign-view" aria-pressed="false">V5 · Campaign Comparison</button>
             <button id="show-spatial" type="button" aria-controls="spatial-view" aria-pressed="false">V6 · Spatial Context</button>
+            <button id="show-satellite" type="button" aria-controls="satellite-view" aria-pressed="false">V7 · Satellite Explorer</button>
         </nav>
 
 
@@ -571,6 +572,7 @@ def home():
         </section>
 
 
+        <section id="satellite-view" hidden aria-label="V7 historical satellite explorer"><iframe id="satellite-frame" title="V7 — Historical Satellite Explorer" data-source="/satellite-explorer"></iframe></section>
         <section id="spatial-view" hidden aria-label="V6 spatial context and surface analysis">
             <iframe id="spatial-frame" title="V6 — Spatial Context and Surface Analysis" data-source="/spatial-context"></iframe>
         </section>
@@ -1036,9 +1038,12 @@ def home():
                 const spatialView = document.getElementById("spatial-view");
                 const spatialButton = document.getElementById("show-spatial");
                 const spatialFrame = document.getElementById("spatial-frame");
-                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView, campaignView, spatialView];
-                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton, campaignButton, spatialButton];
-                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame, campaignFrame, spatialFrame];
+                const satelliteView = document.getElementById("satellite-view");
+                const satelliteButton = document.getElementById("show-satellite");
+                const satelliteFrame = document.getElementById("satellite-frame");
+                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView, campaignView, spatialView, satelliteView];
+                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton, campaignButton, spatialButton, satelliteButton];
+                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame, campaignFrame, spatialFrame, satelliteFrame];
                 function showView(index) {
                     views.forEach((view, i) => { view.hidden = i !== index; });
                     buttons.forEach((button, i) => {
@@ -1050,9 +1055,9 @@ def home():
                         const targetFrame = frames[index];
                         if (!targetFrame.hasAttribute("src")) {
                             targetFrame.src = targetFrame.dataset.source;
-                        } else if (index === 2 || index === 4 || index === 5 || index === 6) {
+                        } else if (index === 2 || index === 4 || index === 5 || index === 6 || index === 7) {
                             requestAnimationFrame(() => targetFrame.contentWindow.postMessage(
-                                {type: index === 2 ? "taquaral:resize" : index === 4 ? "taquaral:environment-resize" : index === 5 ? "taquaral:campaign-resize" : "taquaral:spatial-resize"}, window.location.origin
+                                {type: index === 2 ? "taquaral:resize" : index === 4 ? "taquaral:environment-resize" : index === 5 ? "taquaral:campaign-resize" : index === 6 ? "taquaral:spatial-resize" : "taquaral:satellite-resize"}, window.location.origin
                             ));
                         }
                     }
@@ -1331,3 +1336,24 @@ def spatial_context_export(
         media_type = "application/geo+json" if format == "geojson" else "application/json"
     return Response(content, media_type=media_type,
                     headers={"Content-Disposition": f'attachment; filename="taquaral_v6_{mode}.{format}"'})
+
+
+@app.get("/satellite-explorer", response_class=HTMLResponse)
+def satellite_explorer_view():
+    return (BASE_DIR / "assets/satellite_explorer.html").read_text(encoding="utf-8")
+
+@app.get("/assets/satellite_explorer.js", include_in_schema=False)
+def satellite_explorer_script():
+    from fastapi.responses import FileResponse
+    return FileResponse(BASE_DIR / "assets/satellite_explorer.js", media_type="text/javascript")
+
+@app.get("/api/satellite/catalog")
+def satellite_catalog():
+    from satellite_explorer import catalog
+    return catalog()
+
+@app.get("/api/satellite/image/{scene_id}")
+def satellite_image(scene_id: str):
+    from fastapi.responses import FileResponse
+    from satellite_explorer import image_path
+    return FileResponse(image_path(scene_id),media_type="image/png")
