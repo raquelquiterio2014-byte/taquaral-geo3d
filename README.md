@@ -4,9 +4,9 @@ An educational Python application for exploring Taquaral Lake and its surroundin
 in Campinas, São Paulo, Brazil. It combines an interactive map, geodesic measurements
 and a browser-based 3D surface viewer.
 
-**Available: V1 Parts 1–3, V2 Connected Spatial Exploration and V3 Historical Bathymetry — Published Data Explorer, and the V4 initial historical water-quality dataset.**
+**Final educational edition: V1 Parts 1–3 and V2–V8.** The series concludes with **V8 — History & Heritage**, a locally served historical guide with source references and uncertainty notes.
 
-V1 Parts 1–3 remain available. V1 completion tasks remain pending. V2 and V3 have separate scopes; their visual checks on the author's Windows installation remain pending.
+This is an educational portfolio prototype using public datasets from different periods. V3–V5 use historical thesis records; V6 uses Copernicus/OSM; V7 uses separate 2025 imagery; V8 adds municipal and institutional history. No current environmental monitoring, LiDAR point cloud or live satellite feed is included. Additional original V1 refinements remain outside this final edition. See [project conclusion](PROJECT_CONCLUSION.md).
 
 ## Implemented features
 
@@ -207,3 +207,15 @@ The **V6 · Spatial Context** tab constructs cumulative 100/250/500 m surroundin
 ## V7 — Historical Satellite Explorer
 
 Integrated side-by-side true-color Sentinel-2 imagery, three curated 2025 acquisitions, shared OSM outline, linked map navigation, scene-wide and local SCL cloud screening, and downloadable provenance. Historical educational images; no depth or chemical water-quality inference. Native RGB 10 m, SCL 20 m. Includes small real crops; no account/key needed for local viewing. See [V7 setup and limits](docs/V7_SETUP.md).
+
+
+## V8 — History & Heritage · final edition
+
+A curated 10-record timeline, 5-source bibliography, four uncertainty notes, search/theme/year filters and matching CSV/JSON exports. Event dates, date precision and source publication dates remain distinct. The guide uses local reference data and no external JavaScript dependencies. See [V8 setup and acceptance checks](docs/V8_SETUP.md).
+
+| Route | Purpose |
+| --- | --- |
+| `/history-heritage` | Historical reading guide and project-conclusion table |
+| `/api/history-heritage` | Selected historical records with sources and notes |
+| `/api/history-heritage/export?format=csv` | Selected records with row-level provenance |
+| `/api/history-heritage/export?format=json` | Selected records and complete reading guide |

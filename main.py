@@ -381,7 +381,7 @@ def home():
                 color: #10202b;
             }
 
-            #surface-view, #bathymetry-view, #connected-view, #environment-view, #campaign-view, #spatial-view, #satellite-view {
+            #surface-view, #bathymetry-view, #connected-view, #environment-view, #campaign-view, #spatial-view, #satellite-view, #history-view {
                 padding: 20px;
             }
 
@@ -400,7 +400,7 @@ def home():
                 color: #66e5c4;
             }
 
-            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame, #campaign-frame, #spatial-frame, #satellite-frame {
+            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame, #campaign-frame, #spatial-frame, #satellite-frame, #history-frame {
                 display: block;
                 width: 100%;
                 height: 78vh;
@@ -435,6 +435,7 @@ def home():
             <button id="show-campaign" type="button" aria-controls="campaign-view" aria-pressed="false">V5 · Campaign Comparison</button>
             <button id="show-spatial" type="button" aria-controls="spatial-view" aria-pressed="false">V6 · Spatial Context</button>
             <button id="show-satellite" type="button" aria-controls="satellite-view" aria-pressed="false">V7 · Satellite Explorer</button>
+            <button id="show-history" type="button" aria-controls="history-view" aria-pressed="false">V8 · History &amp; Heritage</button>
         </nav>
 
 
@@ -572,6 +573,7 @@ def home():
         </section>
 
 
+        <section id="history-view" hidden aria-label="V8 history and heritage"><iframe id="history-frame" title="V8 — History and Heritage" data-source="/history-heritage"></iframe></section>
         <section id="satellite-view" hidden aria-label="V7 historical satellite explorer"><iframe id="satellite-frame" title="V7 — Historical Satellite Explorer" data-source="/satellite-explorer"></iframe></section>
         <section id="spatial-view" hidden aria-label="V6 spatial context and surface analysis">
             <iframe id="spatial-frame" title="V6 — Spatial Context and Surface Analysis" data-source="/spatial-context"></iframe>
@@ -1041,9 +1043,12 @@ def home():
                 const satelliteView = document.getElementById("satellite-view");
                 const satelliteButton = document.getElementById("show-satellite");
                 const satelliteFrame = document.getElementById("satellite-frame");
-                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView, campaignView, spatialView, satelliteView];
-                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton, campaignButton, spatialButton, satelliteButton];
-                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame, campaignFrame, spatialFrame, satelliteFrame];
+                const historyView = document.getElementById("history-view");
+                const historyButton = document.getElementById("show-history");
+                const historyFrame = document.getElementById("history-frame");
+                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView, campaignView, spatialView, satelliteView, historyView];
+                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton, campaignButton, spatialButton, satelliteButton, historyButton];
+                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame, campaignFrame, spatialFrame, satelliteFrame, historyFrame];
                 function showView(index) {
                     views.forEach((view, i) => { view.hidden = i !== index; });
                     buttons.forEach((button, i) => {
@@ -1357,3 +1362,44 @@ def satellite_image(scene_id: str):
     from fastapi.responses import FileResponse
     from satellite_explorer import image_path
     return FileResponse(image_path(scene_id),media_type="image/png")
+
+
+# V8 concludes the educational series with a sourced, local historical guide.
+def history_selection(
+    category: str | None = Query(None),
+    q: str = Query("", max_length=120),
+    start_year: str | None = Query(None, max_length=4),
+    end_year: str | None = Query(None, max_length=4),
+):
+    from history_heritage import select_history
+    def parse_year(value):
+        if value is None or value.strip()=="": return None
+        try:
+            year=int(value)
+        except ValueError as exc:
+            raise HTTPException(422, "Use a whole year between 1500 and 2100") from exc
+        if not 1500<=year<=2100: raise HTTPException(422, "Use a whole year between 1500 and 2100")
+        return year
+    return select_history(category or None, q, parse_year(start_year), parse_year(end_year))
+
+@app.get("/history-heritage", response_class=HTMLResponse)
+def history_heritage_view(selection=Depends(history_selection)):
+    from history_heritage import render_history
+    return render_history(selection)
+
+@app.get("/api/history-heritage")
+def history_heritage_data(selection=Depends(history_selection)):
+    return selection
+
+@app.get("/api/history-heritage/export")
+def history_heritage_export(
+    format: Literal["csv", "json"] = Query("json"),
+    selection=Depends(history_selection),
+):
+    from history_heritage import export_csv
+    if format == "csv":
+        content, media_type = export_csv(selection), "text/csv"
+    else:
+        content, media_type = json.dumps(selection, ensure_ascii=False, indent=2)+"\n", "application/json"
+    return Response(content, media_type=media_type,
+                    headers={"Content-Disposition": f'attachment; filename="taquaral_v8_history_heritage.{format}"'})

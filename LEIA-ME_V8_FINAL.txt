@@ -1,0 +1,17 @@
+TAQUARAL GEO3D — V8 · EDIÇÃO EDUCACIONAL FINAL
+
+1. Pare o servidor com Ctrl+C. Faça uma cópia de segurança fora do projeto.
+2. Copie o conteúdo da pasta taquaral-geo3d do ZIP para o projeto, substituindo arquivos de mesmo nome.
+3. Preserve sua .venv. O ZIP inclui o viewer 3D gerado na pasta outputs.
+4. Execute no terminal da pasta do projeto:
+
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m uvicorn main:app --reload
+
+Abra http://127.0.0.1:8000 e pressione Ctrl+F5.
+Selecione V8 · History & Heritage.
+A interface continua em inglês.
+
+A V8 conclui a série com 10 registros históricos, 5 fontes, filtros e exportações.
+Leia docs/V8_SETUP.md para conferir a tela e as fontes.
+O projeto é educacional. Não inclui satélite ao vivo, LiDAR ou medições atuais de profundidade e qualidade da água.

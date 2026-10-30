@@ -1,0 +1,290 @@
+{
+  "version": "V8",
+  "title": "History & Heritage",
+  "reviewed_on": "2026-10-30",
+  "status": "Final educational edition — V1–V8",
+  "scope": "A curated historical reading guide to the lake and park, with dated records and explicit source limitations. Not an exhaustive history or a current visitor-information service.",
+  "categories": {
+    "identity": "Names & park identity",
+    "culture": "Culture & science education",
+    "research": "Research history",
+    "infrastructure": "Works & infrastructure"
+  },
+  "overview": "Taquaral Lake lies within the park commonly called Parque Portugal in Campinas. The lake, the surrounding park and its cultural facilities have different naming and development histories. This guide keeps those subjects distinct.",
+  "sources": [
+    {
+      "id": "pmc-name-2024",
+      "title": "Parque Portugal passa a incluir Arquiteto Denis Roberto Castro Perez no nome",
+      "publisher": "Prefeitura Municipal de Campinas",
+      "url": "https://www.campinas.sp.gov.br/noticias/parque-portugal-passa-a-incluir-arquiteto-denis-roberto-castro-perez-no-nome-108160",
+      "published_date": "2024-07-05",
+      "locator": "Opening paragraphs and reference to Law 356/1950.",
+      "access_note": "Municipal news indexed text reviewed. Full original legal instruments were not independently inspected; portal rendering may vary.",
+      "checked_on": "2026-10-30"
+    },
+    {
+      "id": "pmc-works-2025",
+      "title": "Prefeitura avança na instalação do piso intertravado na Lagoa do Taquaral",
+      "publisher": "Prefeitura Municipal de Campinas",
+      "url": "https://campinas.sp.gov.br/noticias/prefeitura-avanca-na-instalacao-do-piso-intertravado-na-lagoa-do-taquaral-128011",
+      "published_date": "2025-08-19",
+      "locator": "Opening works report, História and Desassoreamento sections.",
+      "access_note": "Municipal news indexed text reviewed; this is a dated progress report, not current works status.",
+      "checked_on": "2026-10-30"
+    },
+    {
+      "id": "sab-2003",
+      "title": "Ensino e divulgação de astronomia no Planetário de Campinas — Romildo Póvoa Faria",
+      "publisher": "Sociedade Astronômica Brasileira / Planetário de Campinas",
+      "url": "https://sab-astro.org.br/wp-content/uploads/2017/02/Boletim_Vol.23_N1_2003.pdf",
+      "published_date": "2003",
+      "locator": "Boletim da SAB, vol. 23, no. 1, printed p. 9, abstract by Romildo Póvoa Faria.",
+      "access_note": "Public PDF abstract reviewed. Written by an author affiliated with the Planetário; retrospective account, not original agreement documentation.",
+      "checked_on": "2026-10-30"
+    },
+    {
+      "id": "unicamp-2022",
+      "title": "Olhe para cima!",
+      "publisher": "Universidade Estadual de Campinas",
+      "url": "https://www2.unicamp.br/estatico-2023/noticias/2022/06/06/olhe-para-cima/",
+      "published_date": "2022-06-06",
+      "locator": "Closing paragraphs on the Planetário and university partnership.",
+      "access_note": "University article reviewed; independently corroborates October 1987 at month precision.",
+      "checked_on": "2026-10-30"
+    },
+    {
+      "id": "usp-thesis",
+      "title": "Caracterização limnológica e estudo do processo de sedimentação e liberação de fósforo da Lagoa do Taquaral - Campinas (SP)",
+      "publisher": "USP / Escola de Engenharia de São Carlos — Esperanza Hernández Piedrahíta",
+      "url": "https://teses.usp.br/teses/disponiveis/18/18139/tde-01122016-130125/pt-br.html",
+      "published_date": "2016-12-01",
+      "locator": "Repository defense date, abstract and publication date; reviewed thesis records used by V3–V5.",
+      "access_note": "Doctoral thesis defended in 2002, repository publication in 2016. Public access does not remove author rights.",
+      "checked_on": "2026-10-30"
+    }
+  ],
+  "events": [
+    {
+      "id": "park-name-1950",
+      "date": "1950-07-14",
+      "date_precision": "day",
+      "year": 1950,
+      "category": "identity",
+      "title": "The name Parque Portugal",
+      "summary": "A municipal account identifies Law 356, dated July 14, 1950, as the earlier naming instrument for the park.",
+      "source_ids": [
+        "pmc-name-2024"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "A naming date is distinct from the park opening date. The original 1950 law has not been independently inspected."
+    },
+    {
+      "id": "park-opening-1972",
+      "date": "1972-11-05",
+      "date_precision": "day",
+      "year": 1972,
+      "category": "identity",
+      "title": "Municipal park inauguration",
+      "summary": "The municipality records the inauguration of the park on November 5, 1972. Its site had belonged to Fazenda Taquaral.",
+      "source_ids": [
+        "pmc-works-2025"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "This dates the park inauguration, not necessarily creation of the lake or construction of every attraction."
+    },
+    {
+      "id": "planetarium-project-1981",
+      "date": "1981",
+      "date_precision": "year",
+      "year": 1981,
+      "category": "culture",
+      "title": "A planetarium project is proposed",
+      "summary": "A retrospective account by the Planetário describes a 1981 proposal led by Unicamp professors for a planetarium in Campinas.",
+      "source_ids": [
+        "sab-2003"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "Only the year is supported here. This proposal is not the opening of the planetarium."
+    },
+    {
+      "id": "science-agreement-1982",
+      "date": "1982",
+      "date_precision": "year",
+      "year": 1982,
+      "category": "culture",
+      "title": "A science-education partnership",
+      "summary": "The same account records a 1982 agreement involving Unicamp, the municipality, Funcamp and the state academy of sciences that enabled acquisition of planetarium equipment.",
+      "source_ids": [
+        "sab-2003"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "The retrospective abstract is the source; the original signed agreement was not inspected."
+    },
+    {
+      "id": "planetarium-opening-1987",
+      "date": "1987-10-28",
+      "date_precision": "day",
+      "year": 1987,
+      "category": "culture",
+      "title": "The Planetário opens",
+      "summary": "The Planetário account dates its opening to October 28, 1987. Unicamp also corroborates an October 1987 opening.",
+      "source_ids": [
+        "sab-2003",
+        "unicamp-2022"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "The day comes from the 2003 abstract; the university article gives the month and year."
+    },
+    {
+      "id": "field-campaigns-2000",
+      "date": "2000",
+      "date_precision": "year",
+      "year": 2000,
+      "category": "research",
+      "title": "Historical field campaigns",
+      "summary": "The USP thesis describes sampling in March, May and August 2000. Reviewed surface records from those campaigns support the V4 and V5 modules.",
+      "source_ids": [
+        "usp-thesis"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "These water-quality campaign dates do not establish the date of the bathymetric survey. No statement about present water conditions is implied."
+    },
+    {
+      "id": "thesis-defense-2002",
+      "date": "2002-10-24",
+      "date_precision": "day",
+      "year": 2002,
+      "category": "research",
+      "title": "A doctoral study is defended",
+      "summary": "USP records October 24, 2002 as the defense date of Esperanza Hernández Piedrahíta’s doctoral study of the lake.",
+      "source_ids": [
+        "usp-thesis"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "The repository publication date is December 1, 2016. Defense, fieldwork and online publication are different events."
+    },
+    {
+      "id": "dredging-2016",
+      "date": "2016",
+      "date_precision": "year",
+      "year": 2016,
+      "category": "infrastructure",
+      "title": "Sediment removal is reported",
+      "summary": "A later municipal report describes dredging in 2016 and reports removal of 63,000 cubic meters of sediment.",
+      "source_ids": [
+        "pmc-works-2025"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "This is reported sediment removal, not lake water volume, current capacity or a quantified comparison with the thesis bathymetry. No exact work dates are established here."
+    },
+    {
+      "id": "park-name-2024",
+      "date": "2024-07-04",
+      "date_precision": "day",
+      "year": 2024,
+      "category": "identity",
+      "title": "The park name honors an architect",
+      "summary": "Municipal news reports Law 16,597, sanctioned July 4, 2024, adding Arquiteto Denis Roberto Castro Perez to the name Parque Portugal.",
+      "source_ids": [
+        "pmc-name-2024"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "The report dates publication to July 5, 2024. This entry concerns the park designation; it does not establish a change to the lake waterbody name."
+    },
+    {
+      "id": "paving-report-2025",
+      "date": "2025-08-19",
+      "date_precision": "day",
+      "year": 2025,
+      "category": "infrastructure",
+      "title": "A dated paving progress report",
+      "summary": "On August 19, 2025, the municipality reported 2,350 linear meters of interlocking pavement installed along the internal track.",
+      "source_ids": [
+        "pmc-works-2025"
+      ],
+      "evidence_status": "documented_in_cited_source",
+      "notes": "The stated aims included accessibility and reducing sediment input. The report is not proof of measured environmental improvement or confirmation of later completion."
+    }
+  ],
+  "uncertainties": [
+    {
+      "title": "Lake formation chronology",
+      "text": "The thesis describes construction in 1968, while the municipality reports a 1950 park-naming law referring to an existing lake. These may describe different stages or works; this project has not reconciled the chronology. No definitive lake-formation date is assigned.",
+      "source_ids": [
+        "usp-thesis",
+        "pmc-name-2024"
+      ]
+    },
+    {
+      "title": "Land transfer history",
+      "text": "Municipal accounts describe the site as former Fazenda Taquaral land. Donation and acquisition narratives were not reconciled against original deeds; a precise transfer date or legal mechanism is not asserted.",
+      "source_ids": [
+        "pmc-works-2025"
+      ]
+    },
+    {
+      "title": "Names are not interchangeable",
+      "text": "Parque Portugal is a park designation. OSM identifies the waterbody as Lagoa Isaura Teles Alves de Lima. Historical spelling and the separate lake-naming instrument were not independently verified in this module.",
+      "source_ids": [
+        "pmc-name-2024"
+      ]
+    },
+    {
+      "title": "No historical reconstruction from imagery",
+      "text": "No archival photograph, georeferenced historical boundary or measured change series is supplied by this module. V7 imagery from 2025 is a separate source; it does not illustrate the earlier events.",
+      "source_ids": []
+    }
+  ],
+  "rights_note": "English summaries were prepared for this educational project. Sources retain their own rights; links are provided for consultation. No archival photographs or full external texts are redistributed.",
+  "project_closeout": {
+    "state": "Educational development series concluded at V8",
+    "modules": [
+      {
+        "version": "V1 · Parts 1–3",
+        "title": "Interactive mapping, measurements and integrated 3D surface",
+        "status": "Delivered milestones; additional POIs and original completion refinements are outside this final edition."
+      },
+      {
+        "version": "V2",
+        "title": "Connected Spatial Exploration",
+        "status": "Shared lake-constrained A–B selection and modeled surface profile."
+      },
+      {
+        "version": "V3",
+        "title": "Historical Bathymetry — Published Data Explorer",
+        "status": "Published thesis metrics and figure; no current underwater reconstruction."
+      },
+      {
+        "version": "V4",
+        "title": "Historical Water Quality Explorer",
+        "status": "48 reviewed surface records from 2000; no present monitoring."
+      },
+      {
+        "version": "V5",
+        "title": "Historical Campaign Comparison",
+        "status": "Descriptive comparison of reviewed historical observations."
+      },
+      {
+        "version": "V6",
+        "title": "Spatial Context & Surface Analysis",
+        "status": "Copernicus DSM buffer, elevation and surface-slope summaries; no LiDAR."
+      },
+      {
+        "version": "V7",
+        "title": "Historical Satellite Explorer",
+        "status": "Three curated 2025 Sentinel-2 acquisitions; no live imagery or automatic refresh."
+      },
+      {
+        "version": "V8",
+        "title": "History & Heritage",
+        "status": "Curated sourced timeline, reference catalog and uncertainty notes."
+      }
+    ],
+    "limits": [
+      "This final edition concludes the educational series; it is not a certified operational product.",
+      "No LAS/LAZ point cloud is integrated; access and survey metadata remain unconfirmed for this project.",
+      "No live satellite feed, current bathymetric survey, real-time water-quality monitoring or validated environmental prediction is included.",
+      "Automated checks and source review do not substitute for field validation. Browser appearance and interactions require local manual verification."
+    ]
+  }
+}
