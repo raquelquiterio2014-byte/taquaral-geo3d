@@ -28,7 +28,7 @@
         armB() {
             if (this.phase === 'await_b' && state.measuring && state.points.length === 1) this.phase = 'b';
         },
-        pick(lat, lng) {
+        async pick(lat, lng) {
             if (!state.measuring || !['a', 'b'].includes(this.phase)) return false;
             if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat)>90 || Math.abs(lng)>180) return false;
             const count = this.phase === 'a' ? 0 : 1;
@@ -37,6 +37,20 @@
                 el('status').textContent = 'Choose point B at a different surface location from point A.';
                 return false;
             }
+            const previousPhase = this.phase;
+            this.phase = 'validating';
+            const validationRevision = revision;
+            try {
+                const q = new URLSearchParams({lat, lon: lng});
+                if (count) { q.set('lat1', state.points[0].lat); q.set('lon1', state.points[0].lng); }
+                await fetchJSON('/api/lake-selection?' + q);
+            } catch (error) {
+                if (this.phase === 'validating' && revision === validationRevision) {
+                    this.phase = previousPhase; instructions(); el('status').textContent = error.message;
+                }
+                return false;
+            }
+            if (this.phase !== 'validating' || revision !== validationRevision) return false;
             this.pendingCount = count;
             this.phase = 'pending'; // Synchronous lock precedes the parent message.
             send('taquaral:point', {lat, lng});
@@ -61,6 +75,7 @@
         el('status').textContent = !embedded ? 'Open this view from the dashboard to share point selections.' :
             selection.phase === 'waiting_reset' ? 'Starting a new selection…' :
             selection.phase === 'waiting_clear' ? 'Clearing selection…' :
+            selection.phase === 'validating' ? 'Checking the mapped lake boundary…' :
             selection.phase === 'pending' ? 'Registering the selected point…' :
             selection.phase === 'a' ? 'Click the surface once to select point A.' :
             selection.phase === 'await_b' ? 'Point A selected. Select the Select point B button before choosing B on the surface, or choose B on the 2D map.' :
@@ -114,6 +129,11 @@
                 if (!el('profile-section').hidden) Plotly.Plots.resize(el('profile'));
             });
             return;
+        }
+        if (event.data?.type === 'taquaral:rejected') {
+            selection.pendingCount = null;
+            selection.phase = state.points.length ? 'b' : 'a';
+            instructions(); el('status').textContent = event.data.detail; return;
         }
         if (event.data?.type !== 'taquaral:state') return;
         const points = event.data.points;

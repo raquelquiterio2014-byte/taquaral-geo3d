@@ -8,6 +8,7 @@ from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.responses import HTMLResponse, Response
 from pyproj import Geod
 from shapely.geometry import shape
+from lake_constraint import require_lake_selection
 from historical_bathymetry import (load_historical_bathymetry, render_historical_bathymetry,
                                   export_historical_bathymetry_csv)
 
@@ -173,6 +174,8 @@ def distance(
             status_code=422,
             detail="Coordinates must be finite numbers.",
         )
+
+    require_lake_selection(lat2, lon2, lat1, lon1)
 
     # Geod expects longitude before latitude.
     _, _, distance_m = GEOD.inv(lon1, lat1, lon2, lat2)
@@ -805,7 +808,8 @@ def home():
                     }
                 }
 
-                function selectLocation(latlng) {
+                let lakeCheckPending = false;
+                async function selectLocation(latlng) {
                     byId("coordinates").textContent =
                         "Latitude, longitude: " + coordinateText(latlng);
 
@@ -813,6 +817,22 @@ def home():
                         return;
                     }
 
+                    if (lakeCheckPending) return;
+                    lakeCheckPending = true;
+                    const checkVersion = requestVersion;
+                    try {
+                        const q = new URLSearchParams({lat:latlng.lat, lon:latlng.lng});
+                        if (points.length) { q.set("lat1",points[0].lat); q.set("lon1",points[0].lng); }
+                        await fetchData("/api/lake-selection?" + q);
+                    } catch (error) {
+                        if (checkVersion === requestVersion) {
+                            byId("distance-status").textContent = error.message;
+                            document.getElementById("connected-frame").contentWindow.postMessage(
+                                {type:"taquaral:rejected", detail:error.message}, window.location.origin);
+                        }
+                        return;
+                    } finally { lakeCheckPending = false; }
+                    if (checkVersion !== requestVersion || !measuring) return;
                     const point = L.latLng(latlng.lat, latlng.lng);
                     points.push(point);
                     publishSelection(points, measuring);
@@ -1119,6 +1139,7 @@ def connected_surface_point(
     lon: float = Query(..., ge=-180, le=180, allow_inf_nan=False),
 ):
     from connected_exploration import point
+    require_lake_selection(lat, lon)
     return point(lat, lon)
 
 
@@ -1130,6 +1151,7 @@ def connected_surface_profile(
     lon2: float = Query(..., ge=-180, le=180, allow_inf_nan=False),
 ):
     from connected_exploration import profile
+    require_lake_selection(lat2, lon2, lat1, lon1)
     return profile(lat1, lon1, lat2, lon2)
 
 
@@ -1189,3 +1211,14 @@ def historical_water_quality_export(
         media_type = "application/json"
     return Response(content, media_type=media_type,
                     headers={"Content-Disposition": f'attachment; filename="taquaral_v4_historical_water_quality.{format}"'})
+
+
+# TAQUARAL_LAKE_ONLY_SELECTION
+@app.get("/api/lake-selection")
+def lake_selection(
+    lat: float = Query(..., ge=-90, le=90, allow_inf_nan=False),
+    lon: float = Query(..., ge=-180, le=180, allow_inf_nan=False),
+    lat1: float | None = Query(None, ge=-90, le=90, allow_inf_nan=False),
+    lon1: float | None = Query(None, ge=-180, le=180, allow_inf_nan=False),
+):
+    return require_lake_selection(lat, lon, lat1, lon1)
