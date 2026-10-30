@@ -197,3 +197,8 @@ V4 initial delivery verification: **30 tests passed**, covering existing V1–V3
 ## V5 — Historical Campaign Comparison
 
 The new **V5 · Campaign Comparison** tab compares reviewed surface observations from the March, May and August 2000 campaigns described in the thesis. Select two campaigns and a parameter; inspect station-specific summaries, signed differences, individual observations, original table excerpts and provenance-preserving CSV/JSON exports. The pH center is the median of reported values, not a mean concentration. No interpolation, percentages, current-condition claims or long-term inference are produced. See [V5_SETUP.md](V5_SETUP.md) for methods, installation and pending manual checks.
+
+
+## V6 — Spatial Context & Surface Analysis
+
+The **V6 · Spatial Context** tab constructs cumulative 100/250/500 m surroundings or disjoint rings in EPSG:32723, excludes mapped water, and summarizes Copernicus DSM elevation and surface slope on a 30 m projected grid. A valid, water-free 3×3 neighborhood is required for slope. The interactive map offers raster layers and zone outlines, with CSV/JSON/GeoJSON exports, coverage, cell counts and source provenance. It is not bare-earth terrain, drainage, flood risk, a legal buffer or bathymetry; no LiDAR or land-use layer is included. See [V6_SETUP.md](V6_SETUP.md) for methods, installation and pending browser checks.

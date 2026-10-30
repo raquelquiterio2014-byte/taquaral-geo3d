@@ -381,7 +381,7 @@ def home():
                 color: #10202b;
             }
 
-            #surface-view, #bathymetry-view, #connected-view, #environment-view, #campaign-view {
+            #surface-view, #bathymetry-view, #connected-view, #environment-view, #campaign-view, #spatial-view {
                 padding: 20px;
             }
 
@@ -400,7 +400,7 @@ def home():
                 color: #66e5c4;
             }
 
-            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame, #campaign-frame {
+            #surface-frame, #bathymetry-frame, #connected-frame, #environment-frame, #campaign-frame, #spatial-frame {
                 display: block;
                 width: 100%;
                 height: 78vh;
@@ -433,6 +433,7 @@ def home():
                 V4 · Water Quality
             </button>
             <button id="show-campaign" type="button" aria-controls="campaign-view" aria-pressed="false">V5 · Campaign Comparison</button>
+            <button id="show-spatial" type="button" aria-controls="spatial-view" aria-pressed="false">V6 · Spatial Context</button>
         </nav>
 
 
@@ -570,6 +571,9 @@ def home():
         </section>
 
 
+        <section id="spatial-view" hidden aria-label="V6 spatial context and surface analysis">
+            <iframe id="spatial-frame" title="V6 — Spatial Context and Surface Analysis" data-source="/spatial-context"></iframe>
+        </section>
         <section id="campaign-view" hidden aria-label="V5 historical campaign comparison">
             <iframe id="campaign-frame" title="V5 — Historical Campaign Comparison" data-source="/campaign-comparison"></iframe>
         </section>
@@ -1029,9 +1033,12 @@ def home():
                 const campaignView = document.getElementById("campaign-view");
                 const campaignButton = document.getElementById("show-campaign");
                 const campaignFrame = document.getElementById("campaign-frame");
-                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView, campaignView];
-                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton, campaignButton];
-                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame, campaignFrame];
+                const spatialView = document.getElementById("spatial-view");
+                const spatialButton = document.getElementById("show-spatial");
+                const spatialFrame = document.getElementById("spatial-frame");
+                const views = [mapView, surfaceView, connectedView, bathymetryView, environmentView, campaignView, spatialView];
+                const buttons = [mapButton, surfaceButton, connectedButton, bathymetryButton, environmentButton, campaignButton, spatialButton];
+                const frames = [null, frame, connectedFrame, bathymetryFrame, environmentFrame, campaignFrame, spatialFrame];
                 function showView(index) {
                     views.forEach((view, i) => { view.hidden = i !== index; });
                     buttons.forEach((button, i) => {
@@ -1043,9 +1050,9 @@ def home():
                         const targetFrame = frames[index];
                         if (!targetFrame.hasAttribute("src")) {
                             targetFrame.src = targetFrame.dataset.source;
-                        } else if (index === 2 || index === 4 || index === 5) {
+                        } else if (index === 2 || index === 4 || index === 5 || index === 6) {
                             requestAnimationFrame(() => targetFrame.contentWindow.postMessage(
-                                {type: index === 2 ? "taquaral:resize" : index === 4 ? "taquaral:environment-resize" : "taquaral:campaign-resize"}, window.location.origin
+                                {type: index === 2 ? "taquaral:resize" : index === 4 ? "taquaral:environment-resize" : index === 5 ? "taquaral:campaign-resize" : "taquaral:spatial-resize"}, window.location.origin
                             ));
                         }
                     }
@@ -1277,3 +1284,50 @@ def historical_campaign_export(
         media_type = "application/json"
     return Response(content, media_type=media_type,
                     headers={"Content-Disposition": f'attachment; filename="taquaral_v5_{section}.{format}"'})
+
+
+@app.get("/spatial-context", response_class=HTMLResponse)
+def spatial_context_view():
+    return (BASE_DIR / "assets/spatial_context.html").read_text(encoding="utf-8")
+
+
+@app.get("/assets/spatial_context.js", include_in_schema=False)
+def spatial_context_script():
+    from fastapi.responses import FileResponse
+    return FileResponse(BASE_DIR / "assets/spatial_context.js", media_type="text/javascript")
+
+
+@app.get("/api/spatial-context")
+def spatial_context_analysis(mode: Literal["cumulative", "rings"] = Query("cumulative")):
+    from spatial_context import analyze
+    return analyze(mode)
+
+
+@app.get("/api/spatial-context/raster")
+def spatial_context_raster(
+    mode: Literal["cumulative", "rings"] = Query("cumulative"),
+    distance: int = Query(100),
+    layer: Literal["elevation", "slope"] = Query("elevation"),
+):
+    from spatial_context import raster_png
+    if distance not in (100, 250, 500):
+        raise HTTPException(422, "Choose a buffer distance of 100, 250 or 500 m.")
+    return Response(raster_png(distance, mode, layer), media_type="image/png", headers={"Cache-Control":"no-cache"})
+
+
+@app.get("/api/spatial-context/export")
+def spatial_context_export(
+    mode: Literal["cumulative", "rings"] = Query("cumulative"),
+    format: Literal["json", "csv", "geojson"] = Query("json"),
+):
+    from spatial_context import analyze, export_csv
+    data = analyze(mode)
+    if format == "csv":
+        content, media_type = export_csv(data), "text/csv"
+    else:
+        if format == "geojson":
+            data = {**data["zone_geojson"], "sources": data["sources"], "method": data["method"], "limitations": data["limitations"], "status": data["status"]}
+        content = json.dumps(data, ensure_ascii=False, indent=2)+"\n"
+        media_type = "application/geo+json" if format == "geojson" else "application/json"
+    return Response(content, media_type=media_type,
+                    headers={"Content-Disposition": f'attachment; filename="taquaral_v6_{mode}.{format}"'})

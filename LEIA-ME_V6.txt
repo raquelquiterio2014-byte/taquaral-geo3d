@@ -1,0 +1,30 @@
+TAQUARAL GEO3D — V6: CONTEXTO ESPACIAL E ANÁLISE DA SUPERFÍCIE
+
+INSTALAÇÃO
+1. Pare o servidor com Ctrl+C e faça uma cópia do projeto atual.
+2. Extraia o ZIP. Abra a pasta taquaral-geo3d que contém main.py.
+3. Copie seu conteúdo para a pasta do projeto no PyCharm, substituindo os arquivos existentes.
+4. Preserve sua .venv e a pasta outputs atual. Mantenha o HTML 3D já gerado.
+5. No terminal, na raiz do projeto, execute:
+   .\.venv\Scripts\python.exe -m uvicorn main:app --reload
+6. Abra http://127.0.0.1:8000 e pressione Ctrl+F5.
+7. Selecione V6 · Spatial Context.
+
+PRIMEIRO TESTE
+- Use Cumulative e confira as faixas até 100, 250 e 500 metros.
+- Selecione DSM surface elevation para mostrar elevações.
+- Selecione DSM-derived surface slope para a declividade da superfície modelada.
+- Mude para Disjoint rings e confira os intervalos 0–100, 100–250 e 250–500 m.
+- Use Zone outlines only para ver apenas as geometrias sobre o mapa.
+- Teste Summary CSV, Full analysis JSON e Zones GeoJSON.
+
+IMPORTANTE
+As faixas cumulativas se sobrepõem: não some suas áreas ou contagens. As exportações incluem as três faixas do modo selecionado, não apenas aquela exibida no mapa.
+A declividade exclui água mapeada, bordas do raster e vizinhanças sem dados. Ausência de dados não significa declividade zero.
+O Copernicus é um modelo de superfície que pode incluir árvores e prédios. Isso não é levantamento do terreno, batimetria, avaliação de risco de inundação ou condição atual da lagoa.
+A V6 não inclui LiDAR nem uso do solo; utiliza o Copernicus e o OpenStreetMap já existentes no projeto.
+O mapa-base exige internet. Se a biblioteca do mapa não carregar, tabelas e exportações continuam disponíveis.
+
+Foram aprovados 169 testes em Python e 17 em JavaScript. Falta conferir o resultado visual e a interação no seu navegador.
+Nenhuma nova dependência do aplicativo é necessária em um ambiente V5 atualizado. Para instalação nova, consulte README.md e requirements.txt.
+As versões anteriores e as correções da seleção A–B estão incluídas.
