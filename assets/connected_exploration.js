@@ -5,6 +5,45 @@
     const embedded = window.parent !== window;
     let ready = false, revision = 0;
     let state = {points: [], measuring: false};
+    // Lock each 3D pick before postMessage, and explicitly arm B after A.
+    // No clock-based debounce: delayed/repeated Plotly events remain blocked.
+    const selection = {
+        phase: 'idle', pendingCount: null,
+        begin() { this.phase = 'waiting_reset'; this.pendingCount = null; },
+        clear() { this.phase = 'waiting_clear'; this.pendingCount = null; },
+        accept(points, measuring) {
+            if (this.phase === 'waiting_reset') {
+                if (points.length || !measuring) return;
+            } else if (this.phase === 'waiting_clear') {
+                if (points.length || measuring) return;
+            } else if (this.pendingCount !== null && measuring && points.length <= this.pendingCount) {
+                return; // A delayed, unchanged parent state is not an acknowledgement.
+            }
+            const previous = this.phase;
+            this.pendingCount = null;
+            state = {points, measuring};
+            this.phase = !measuring ? (points.length === 2 ? 'complete' : 'idle') :
+                points.length === 0 ? 'a' : points.length === 1 ? (previous === 'b' ? 'b' : 'await_b') : 'complete';
+        },
+        armB() {
+            if (this.phase === 'await_b' && state.measuring && state.points.length === 1) this.phase = 'b';
+        },
+        pick(lat, lng) {
+            if (!state.measuring || !['a', 'b'].includes(this.phase)) return false;
+            if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat)>90 || Math.abs(lng)>180) return false;
+            const count = this.phase === 'a' ? 0 : 1;
+            if (state.points.length !== count) return false;
+            if (count && Math.abs(lat-state.points[0].lat)<1e-9 && Math.abs(lng-state.points[0].lng)<1e-9) {
+                el('status').textContent = 'Choose point B at a different surface location from point A.';
+                return false;
+            }
+            this.pendingCount = count;
+            this.phase = 'pending'; // Synchronous lock precedes the parent message.
+            send('taquaral:point', {lat, lng});
+            instructions();
+            return true;
+        }
+    };
     const chartOptions = {responsive: true, displaylogo: false};
     const layout = {template: 'plotly_dark', paper_bgcolor: '#10202b', plot_bgcolor: '#10202b',
         font: {color: '#edf5fa'}, margin: {l: 45, r: 35, t: 35, b: 50}};
@@ -16,9 +55,18 @@
     function send(type, extra = {}) { if (embedded) window.parent.postMessage({type, ...extra}, origin); }
     function instructions() {
         el('selected').textContent = ['A','B'].map((label,i) => label + ': ' + (state.points[i] ? state.points[i].lat.toFixed(6) + ', ' + state.points[i].lng.toFixed(6) : '—')).join(' · ');
+        el('select-b').disabled = !embedded || !ready || selection.phase !== 'await_b';
+        el('start').disabled = !embedded || !ready;
+        el('clear').disabled = !embedded || !ready;
         el('status').textContent = !embedded ? 'Open this view from the dashboard to share point selections.' :
-            state.measuring ? (state.points.length ? 'A selected. Click B on the 3D surface or the 2D map.' : 'Click A on the 3D surface or the 2D map.') :
-            state.points.length === 2 ? 'A–B selected. The map and V2 share these coordinates.' : 'Choose Select A–B to start. Rotate by dragging; scroll to zoom.';
+            selection.phase === 'waiting_reset' ? 'Starting a new selection…' :
+            selection.phase === 'waiting_clear' ? 'Clearing selection…' :
+            selection.phase === 'pending' ? 'Registering the selected point…' :
+            selection.phase === 'a' ? 'Click the surface once to select point A.' :
+            selection.phase === 'await_b' ? 'Point A selected. Select the Select point B button before choosing B on the surface, or choose B on the 2D map.' :
+            selection.phase === 'b' ? 'Click a different surface location once to select point B.' :
+            state.points.length === 2 ? 'A–B selected. The map and V2 share these coordinates.' :
+            'Choose Select point A to start. Rotate by dragging; scroll to zoom.';
     }
     async function updateSelection() {
         if (!ready) return;
@@ -70,12 +118,13 @@
         if (event.data?.type !== 'taquaral:state') return;
         const points = event.data.points;
         if (!Array.isArray(points) || points.length>2 || points.some(p=>!Number.isFinite(p.lat)||!Number.isFinite(p.lng)||Math.abs(p.lat)>90||Math.abs(p.lng)>180)) return;
-        state = {points, measuring:!!event.data.measuring};
+        selection.accept(points, !!event.data.measuring);
         updateSelection();
     });
-    el('start').onclick = () => send('taquaral:start');
-    el('clear').onclick = () => send('taquaral:clear');
-    if (!embedded) { el('start').disabled = true; el('clear').disabled = true; }
+    el('start').onclick = () => { selection.begin(); instructions(); send('taquaral:start'); };
+    el('select-b').onclick = () => { selection.armB(); instructions(); };
+    el('clear').onclick = () => { selection.clear(); instructions(); send('taquaral:clear'); };
+    instructions();
     try {
         if (typeof Plotly === 'undefined') throw new Error('Plotly could not load. Check the server dependencies.');
         const d = await fetchJSON('/api/surface-scene');
@@ -88,7 +137,7 @@
         el('scene').on('plotly_click', event => {
             if (!state.measuring) return;
             const p=event.points.find(p=>p.curveNumber===0);
-            if (p && Array.isArray(p.customdata)) send('taquaral:point',{lat:p.customdata[0],lng:p.customdata[1]});
+            if (p && Array.isArray(p.customdata)) selection.pick(p.customdata[0], p.customdata[1]);
         });
         ready = true;
         await updateSelection();
