@@ -24,7 +24,7 @@ The ZIP also contains the existing V3 files and the generated V1 3D HTML viewer.
 - Select Measure distance on the 2D map and choose A and B. Open **V2 · Connected Exploration**: the same coordinates should appear with the A–B surface trace, endpoint elevations and profile.
 - In V2, select **Select A–B**, click two surface grid locations, then return to **Map & Measurements**: the A–B markers and distance should match the shared coordinates. Surface selections snap to pixel centers; map clicks retain their selected coordinates.
 - **Clear selection** clears both views and hides the profile. Changing tabs preserves selections and the 3D camera.
-- A point outside the cropped study area keeps the 2D geodesic result and shows an actionable V2 message. Missing/no-data cells appear as gaps, not zero elevations.
+- Choose valid A–B selections within the permitted mapped lake geometry. Confirm that selections outside that geometry are rejected with a clear message by the distance, surface-point and surface-profile APIs; do not expect a new valid 2D result for a rejected selection. Test raster missing/NoData behavior separately: missing samples appear as gaps or null values, not zero elevations.
 - Check the layout and chart resize in a narrow browser window. The title and sources remain visible in the iframe.
 - Historical Bathymetry should still show the independent V3 thesis-based panel and its CSV/JSON downloads.
 
@@ -42,7 +42,7 @@ The OSM lake outline and selected points/path are displayed 1 m above the sample
 
 - `/connected-exploration`: dashboard V2 view (shared state requires opening from the dashboard).
 - `/api/surface-scene`: DSM grid and sampled OSM lake outline.
-- `/api/surface-point?lat=...&lon=...`: point elevation and UTM offsets (null elevation for missing/outside cells).
+- `/api/surface-point?lat=...&lon=...`: point elevation and UTM offsets for a permitted lake selection (null elevation for missing raster data; selections outside the permitted lake geometry are rejected).
 - `/api/surface-profile?lat1=...&lon1=...&lat2=...&lon2=...`: geodesic sampled profile with source/method.
 
 ## Publication boundaries
