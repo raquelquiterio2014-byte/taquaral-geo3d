@@ -1,0 +1,19 @@
+TAQUARAL GEO3D — REVISÃO DE VALIDAÇÃO DA EDIÇÃO V8
+
+Esta atualização incorpora e avalia os comentários recebidos. Não cria uma V9.
+O código já usava covers, verificava todo o trajeto A–B e preservava lacunas de elevação.
+A revisão acrescenta testes e um relatório de comparação geodésica × UTM.
+
+Para atualizar: pare Uvicorn com Ctrl+C, faça uma cópia de segurança fora do projeto e copie o conteúdo desta pasta sobre o projeto. Preserve a .venv.
+Execute no terminal:
+.\.venv\Scripts\python.exe -m uvicorn main:app --reload
+
+Abra http://127.0.0.1:8000 e pressione Ctrl+F5.
+Na aba V2, abra Source, method and limits e o link para as verificações.
+Relatório direto: http://127.0.0.1:8000/api/measurement-validation
+Para gerar arquivos locais: .\.venv\Scripts\python.exe measurement_validation.py
+
+Foram testados seis pares, com diferença máxima aproximada de 0,014891%.
+206 testes Python e 21 testes JavaScript passaram nesta revisão.
+A precisão posicional do contorno NÃO foi validada: faltam levantamento independente e pontos de controle correspondentes. Nenhum valor de desvio posicional foi inventado.
+Leia docs/MEASUREMENT_REVIEW.md para comentários originais, resultados, fontes e limites.

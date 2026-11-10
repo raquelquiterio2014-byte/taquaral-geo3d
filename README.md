@@ -272,3 +272,9 @@ A curated 10-record timeline, 5-source bibliography, four uncertainty notes, sea
 | `/api/history-heritage` | Selected historical records with sources and notes |
 | `/api/history-heritage/export?format=csv` | Selected records with row-level provenance |
 | `/api/history-heritage/export?format=json` | Selected records and complete reading guide |
+
+## Measurement validation review — final V8 supplement
+
+Peer feedback was assessed against the actual implementation. Boundary-inclusive `covers`, full densified geodesic-path containment and missing-elevation gaps were already present. The review adds 17 regression cases, six reproducible geodesic-versus-UTM checks and an explicit distinction between calculation consistency and unvalidated source position.
+
+Run `python measurement_validation.py` or open `/api/measurement-validation` (CSV: `?format=csv`). The V2 source/method section links to these results. Maximum relative difference on six diagnostic pairs: approximately 0.014891%; the 0.1% diagnostic is local, not a universal accuracy guarantee. Independent shoreline survey comparison remains **NOT_VALIDATED**. See [feedback, methods and results](docs/MEASUREMENT_REVIEW.md). Updated suite: **206 Python + 21 JavaScript tests passed**; no field or new browser-rendering validation is implied.

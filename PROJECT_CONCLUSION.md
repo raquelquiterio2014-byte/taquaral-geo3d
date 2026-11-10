@@ -51,3 +51,7 @@ The included DSM crop supports V2/V6, and the curated satellite crops support V7
 The ZIP preserves scripts, small public data snapshots, source excerpts and the generated V1 standalone 3D HTML in `outputs`. GitHub preserves source and small data; the large generated viewer is excluded there and can be regenerated with `build_surface_3d.py`. No virtual environment, IDE state, caches or backups are distributed.
 
 The original source elevation tile is not bundled. Rebuilding the viewer from the public source may require an approximately 41 MB download. The included crop supports the current V2/V6 analyses. Map libraries/tiles, external source links and the optional aerial WMS need internet; the V8 guide and its exports do not.
+
+## Peer-feedback validation supplement · November 10, 2026
+
+The educational series remains concluded at V8. A post-series review adds reproducible internal distance diagnostics and regression tests without adding a new product version. Read `docs/MEASUREMENT_REVIEW.md` for the supplied comments and assessment. Six local UTM/geodesic comparisons passed the project's 0.1% diagnostic (maximum approximately 0.014891%). Independent positional validation of the source shoreline remains **NOT_VALIDATED**; no authoritative survey/control-point offsets are available. Updated automated suite: 206 Python and 21 JavaScript checks passed.

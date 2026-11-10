@@ -1,0 +1,208 @@
+{
+  "title": "Measurement validation \u2014 peer-feedback review",
+  "reviewed_at_utc": "2026-11-10T19:23:18.795922+00:00",
+  "scope": "Internal calculation consistency only; no independent source-geometry or positional accuracy validation.",
+  "horizontal_crs": "WGS 84 / UTM zone 23S (EPSG:32723)",
+  "reference_distance": "Shortest WGS 84 ellipsoidal geodesic; no terrain or elevation reduction",
+  "grid_distance": "Euclidean distance between endpoints projected together into EPSG:32723; raw grid scale, not ground distance",
+  "pair_source": "Six deterministic diagnostic pairs derived from the OSM polygon; not surveyed control points and not historical observations",
+  "pairs": [
+    {
+      "point_a": {
+        "latitude": -22.875847529999998,
+        "longitude": -47.053488845
+      },
+      "point_b": {
+        "latitude": -22.875847529999998,
+        "longitude": -47.05293978
+      },
+      "geodesic_m": 56.34288621489777,
+      "utm_grid_m": 56.35123459425855,
+      "signed_difference_m": 0.008348379360782587,
+      "absolute_difference_m": 0.008348379360782587,
+      "relative_difference_percent": 0.014817095682569366,
+      "diagnostic_limit_percent": 0.1,
+      "within_local_diagnostic_limit": true,
+      "sampled_scale_min": 1.000148024279937,
+      "sampled_scale_max": 1.0001483176523998,
+      "zero_length_pair": false,
+      "interpretation": "Internal calculation consistency only; no independent source-geometry or positional accuracy validation.",
+      "pair_id": "local-1",
+      "segment_covered_by_mapped_lake": true,
+      "profile_sample_count": 3,
+      "valid_profile_samples": 3,
+      "missing_profile_samples": 0
+    },
+    {
+      "point_a": {
+        "latitude": -22.87376991,
+        "longitude": -47.047449130000004
+      },
+      "point_b": {
+        "latitude": -22.87307737,
+        "longitude": -47.046900065
+      },
+      "geodesic_m": 95.16573045940636,
+      "utm_grid_m": 95.17952654424579,
+      "signed_difference_m": 0.01379608483942718,
+      "absolute_difference_m": 0.01379608483942718,
+      "relative_difference_percent": 0.01449690426672236,
+      "diagnostic_limit_percent": 0.1,
+      "within_local_diagnostic_limit": true,
+      "sampled_scale_min": 1.0001448255826073,
+      "sampled_scale_max": 1.0001451125032694,
+      "zero_length_pair": false,
+      "interpretation": "Internal calculation consistency only; no independent source-geometry or positional accuracy validation.",
+      "pair_id": "local-2",
+      "segment_covered_by_mapped_lake": true,
+      "profile_sample_count": 5,
+      "valid_profile_samples": 5,
+      "missing_profile_samples": 0
+    },
+    {
+      "point_a": {
+        "latitude": -22.87480872,
+        "longitude": -47.055685105
+      },
+      "point_b": {
+        "latitude": -22.875847529999998,
+        "longitude": -47.053488845
+      },
+      "geodesic_m": 253.03549570226394,
+      "utm_grid_m": 253.0731748952155,
+      "signed_difference_m": 0.03767919295154343,
+      "absolute_difference_m": 0.03767919295154343,
+      "relative_difference_percent": 0.014890872463157866,
+      "diagnostic_limit_percent": 0.1,
+      "within_local_diagnostic_limit": true,
+      "sampled_scale_min": 1.0001483175755925,
+      "sampled_scale_max": 1.0001495000792342,
+      "zero_length_pair": false,
+      "interpretation": "Internal calculation consistency only; no independent source-geometry or positional accuracy validation.",
+      "pair_id": "local-3",
+      "segment_covered_by_mapped_lake": true,
+      "profile_sample_count": 10,
+      "valid_profile_samples": 10,
+      "missing_profile_samples": 0
+    },
+    {
+      "point_a": {
+        "latitude": -22.875847529999998,
+        "longitude": -47.053488845
+      },
+      "point_b": {
+        "latitude": -22.87376991,
+        "longitude": -47.049096325
+      },
+      "geodesic_m": 506.0725112984784,
+      "utm_grid_m": 506.14698165309585,
+      "signed_difference_m": 0.07447035461746054,
+      "absolute_difference_m": 0.07447035461746054,
+      "relative_difference_percent": 0.014715352633239233,
+      "diagnostic_limit_percent": 0.1,
+      "within_local_diagnostic_limit": true,
+      "sampled_scale_min": 1.0001459902232728,
+      "sampled_scale_max": 1.0001483176523998,
+      "zero_length_pair": false,
+      "interpretation": "Internal calculation consistency only; no independent source-geometry or positional accuracy validation.",
+      "pair_id": "local-4",
+      "segment_covered_by_mapped_lake": true,
+      "profile_sample_count": 18,
+      "valid_profile_samples": 18,
+      "missing_profile_samples": 0
+    },
+    {
+      "point_a": {
+        "latitude": -22.87550126,
+        "longitude": -47.054586975
+      },
+      "point_b": {
+        "latitude": -22.874116179999998,
+        "longitude": -47.047449130000004
+      },
+      "geodesic_m": 748.3513346072973,
+      "utm_grid_m": 748.4613477652639,
+      "signed_difference_m": 0.11001315796659128,
+      "absolute_difference_m": 0.11001315796659128,
+      "relative_difference_percent": 0.014700736522949006,
+      "diagnostic_limit_percent": 0.1,
+      "within_local_diagnostic_limit": true,
+      "sampled_scale_min": 1.000145109633024,
+      "sampled_scale_max": 1.00014890729216,
+      "zero_length_pair": false,
+      "interpretation": "Internal calculation consistency only; no independent source-geometry or positional accuracy validation.",
+      "pair_id": "local-5",
+      "segment_covered_by_mapped_lake": true,
+      "profile_sample_count": 26,
+      "valid_profile_samples": 26,
+      "missing_profile_samples": 0
+    },
+    {
+      "point_a": {
+        "latitude": -22.87550126,
+        "longitude": -47.056234169999996
+      },
+      "point_b": {
+        "latitude": -22.87446245,
+        "longitude": -47.046900065
+      },
+      "geodesic_m": 964.7188140476857,
+      "utm_grid_m": 964.860916529706,
+      "signed_difference_m": 0.14210248202027742,
+      "absolute_difference_m": 0.14210248202027742,
+      "relative_difference_percent": 0.01472993787941751,
+      "diagnostic_limit_percent": 0.1,
+      "within_local_diagnostic_limit": true,
+      "sampled_scale_min": 1.000144814397615,
+      "sampled_scale_max": 1.000149788128688,
+      "zero_length_pair": false,
+      "interpretation": "Internal calculation consistency only; no independent source-geometry or positional accuracy validation.",
+      "pair_id": "local-6",
+      "segment_covered_by_mapped_lake": true,
+      "profile_sample_count": 34,
+      "valid_profile_samples": 34,
+      "missing_profile_samples": 0
+    }
+  ],
+  "maximum_absolute_relative_difference_percent": 0.014890872463157866,
+  "all_local_pairs_within_diagnostic_limit": true,
+  "boundary_rules": {
+    "predicate": "covers (boundary included)",
+    "path_check": "Whole piecewise-linear representation of the geodesic, chords <= 1 m; exterior and mapped holes checked",
+    "limitation": "Numerical approximation in geographic coordinates, not proof of exact shoreline position or sub-meter field accuracy"
+  },
+  "raster": {
+    "valid_cell_count": 18415,
+    "invalid_cell_count": 0,
+    "missing_value_behavior": "Raster validity masks and non-finite values become None/null samples; Plotly connectgaps:false; no zero filling or gap interpolation",
+    "nominal_sampling_m": 30,
+    "model_type": "DSM, not bathymetry"
+  },
+  "positional_accuracy": {
+    "status": "NOT_VALIDATED",
+    "independent_reference_available": false,
+    "control_points_tested": 0,
+    "reason": "No independently verified authoritative shoreline survey and matched control points are supplied with this project.",
+    "requirements": [
+      "Reference provenance, lineage independence, CRS/datum, survey date and uncertainty",
+      "Matched identifiable boundary locations and comparable shoreline epoch/water level",
+      "Offsets and their distribution, with reference uncertainty and sampling method; calculation agreement alone is insufficient"
+    ]
+  },
+  "threshold_note": "0.1% is a project-local diagnostic, not a universal same-zone bound. Expected raw-grid differences depend on projection scale and path. A larger difference prompts investigation; it is not proof of a bug or a zone crossing.",
+  "sources": {
+    "boundary_sha256": "142c686ed70862771110823afa7fe072c74e81f9184b1ffd266b55409fd86370",
+    "dsm_sha256": "0bca8d913e2aa0f3b30a1c7f15132e905c117e857f19cd71fb8a698773970d4b",
+    "documentation": [
+      "https://shapely.readthedocs.io/en/stable/reference/shapely.covers.html",
+      "https://proj.org/en/stable/operations/projections/utm.html",
+      "https://pyproj4.github.io/pyproj/stable/api/proj.html",
+      "https://rasterio.readthedocs.io/en/stable/topics/masks.html"
+    ]
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "pyproj": "3.8.0",
+    "proj": "9.8.1"
+  }
+}

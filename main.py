@@ -1403,3 +1403,13 @@ def history_heritage_export(
         content, media_type = json.dumps(selection, ensure_ascii=False, indent=2)+"\n", "application/json"
     return Response(content, media_type=media_type,
                     headers={"Content-Disposition": f'attachment; filename="taquaral_v8_history_heritage.{format}"'})
+
+
+@app.get('/api/measurement-validation')
+def measurement_validation_report(format: Literal['json', 'csv'] = Query('json')):
+    from measurement_validation import build_report, csv_report
+    data = build_report()
+    if format == 'csv':
+        return Response(csv_report(data), media_type='text/csv',
+                        headers={'Content-Disposition': 'attachment; filename="taquaral_measurement_checks.csv"'})
+    return data
